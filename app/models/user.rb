@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
+# User model for the Beyond Home application
 class User < ApplicationRecord
   validates :username, :password_digest, :session_token, presence: true
   validates :username, uniqueness: true
-  validates :password, length: {minimum: 8}, allow_nil: :true
+  validates :password, length: { minimum: 8 }, allow_nil: true
 
   has_many :projects, dependent: :destroy
 
@@ -9,8 +12,8 @@ class User < ApplicationRecord
   has_many :liked_projects, through: :likes, source: :project
 
   has_many :images, through: :projects, source: :images
-  has_many :comments
-  
+  has_many :comments, dependent: :destroy
+
   attr_reader :password
 
   after_initialize :ensure_session_token
@@ -19,11 +22,12 @@ class User < ApplicationRecord
   def self.find_by_credentials(username, password)
     user = User.find_by(username: username)
     return nil unless user
-    user.is_password?(password) ? user : nil
+
+    user.password?(password) ? user : nil
   end
 
-  def is_password?(password)
-    BCrypt::Password.new(self.password_digest).is_password?(password)
+  def password?(password)
+    BCrypt::Password.new(password_digest).is_password?(password)
   end
 
   def password=(password)
@@ -34,8 +38,8 @@ class User < ApplicationRecord
   def reset_session_token!
     self.session_token = new_session_token
     ensure_session_token_uniqueness
-    self.save
-    self.session_token
+    save
+    session_token
   end
 
   private
@@ -49,8 +53,6 @@ class User < ApplicationRecord
   end
 
   def ensure_session_token_uniqueness
-    while User.find_by(session_token: self.session_token)
-      self.session_token = new_session_token
-    end
+    self.session_token = new_session_token while User.find_by(session_token: self.session_token)
   end
 end

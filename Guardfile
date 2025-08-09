@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
@@ -15,28 +17,28 @@
 #
 # and, you'll have to watch "config/Guardfile" instead of "Guardfile"
 
-guard 'livereload' do
-  extensions = {
-    css: :css,
-    scss: :css,
-    sass: :css,
-    js: :js,
-    coffee: :js,
-    html: :html,
-    png: :png,
-    gif: :gif,
-    jpg: :jpg,
-    jpeg: :jpeg,
-    # less: :less, # uncomment if you want LESS stylesheets done in browser
-  }
+EXTENSIONS = {
+  css: :css,
+  scss: :css,
+  sass: :css,
+  js: :js,
+  coffee: :js,
+  html: :html,
+  png: :png,
+  gif: :gif,
+  jpg: :jpg,
+  jpeg: :jpeg
+  # less: :less, # uncomment if you want LESS stylesheets done in browser
+}.freeze
 
-  rails_view_exts = %w(erb haml slim)
+guard 'livereload' do
+  rails_view_exts = %w[erb haml slim]
 
   # file types LiveReload may optimize refresh for
-  compiled_exts = extensions.values.uniq
+  compiled_exts = EXTENSIONS.values.uniq
   watch(%r{public/.+\.(#{compiled_exts * '|'})})
 
-  extensions.each do |ext, type|
+  EXTENSIONS.each do |ext, type|
     watch(%r{
           (?:app|vendor)
           (?:/assets/\w+/(?<path>[^.]+) # path+base without extension

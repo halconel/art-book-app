@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 @images.each do |image|
   json.set! image.id do
     json.id image.id

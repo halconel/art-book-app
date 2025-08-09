@@ -1,42 +1,31 @@
-class Api::ProjectsController < ApplicationController
+# frozen_string_literal: true
 
-  # def index
-  #   if params[:user_id]
-  #     @projects = User.find(params[:user_id]).projects
-  #   elsif params[:current_user]
-  #     @projects = current_user.projects
-  #   else
-  #     @projects = Project.all
-  #   end
-  # end
+module Api
+  # API controller for managing projects
+  class ProjectsController < ApplicationController
+    def index
+      @projects = Project.all
+      render :index
+    end
 
-  def index
-    # cloud_name = ENV['CLOUD_NAME']
-    # # upload_preset = ENV['UPLOAD_PRESET']
-    # upload_preset = Figaro.env.UPLOAD_PRESET
-    # puts "API KEYS: #{cloud_name} #{upload_preset}"
-    @projects = Project.all
-    render :index
-  end
+    def show
+      @project = Project.find(params[:id])
+    end
 
-  def show
-    @project = Project.find(params[:id])
-  end
+    def create
+      @project = Project.new(project_params)
 
-  def create
-    @project = Project.new(project_params)
+      if @project.save
+        render :show
+      else
+        render json: @project.errors.full_messages, status: :unprocessable_content
+      end
+    end
 
-    if @project.save
-      render :show
-    else
-      render json: @project.errors.full_messages, status: 422
+    private
+
+    def project_params
+      params.require(:project).permit(:title, :description, :thumbnail_url, :user_id)
     end
   end
-
-  private
-
-  def project_params
-    params.require(:project).permit(:title, :description, :thumbnail_url, :user_id)
-  end
-
 end

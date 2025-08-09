@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 @likes.each do |like|
   json.set! like.id do
     json.id like.id

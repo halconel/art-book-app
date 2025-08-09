@@ -1,0 +1,19 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Запуск линтеров перед коммитом
+echo "🔍 Running linters..."
+
+# Ruby линтер
+echo "📝 Checking Ruby code..."
+bundle exec rubocop --parallel
+
+# JavaScript линтер
+echo "📝 Checking JavaScript code..."
+npm run lint
+
+# Форматирование
+echo "🎨 Formatting code..."
+npm run format
+
+echo "✅ All checks passed!"

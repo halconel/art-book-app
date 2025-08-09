@@ -1,24 +1,27 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  example = {username: 'anastassia', email: 'test', password: 'topsecret'}
+  example = { username: 'anastassia', email: 'test', password: 'topsecret' }
 
   describe 'password encryption' do
     it 'does not save passwords to the database' do
-      User.create!(example)
-      user = User.find_by_username('anastassia')
+      described_class.create!(example)
+      user = described_class.find_by(username: 'anastassia')
       expect(user.password).not_to be('topsecret')
     end
 
     it 'encrypts the password using BCrypt' do
-      expect(BCrypt::Password).to receive(:create)
-      User.new(example)
+      allow(BCrypt::Password).to receive(:create)
+      described_class.new(example)
+      expect(BCrypt::Password).to have_received(:create)
     end
   end
 
   describe 'session token' do
     it 'assigns a session_token if one is not given' do
-      anastassia = User.create(example)
+      anastassia = described_class.create(example)
       expect(anastassia.session_token).not_to be_nil
     end
   end

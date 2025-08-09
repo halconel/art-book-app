@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 @comments.each do |comment|
   json.set! comment.id do
     json.id comment.id
