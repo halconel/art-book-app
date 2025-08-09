@@ -1,20 +1,27 @@
 import { connect } from 'react-redux';
+import { fetchUser } from '../../actions/user_actions';
 import UserMain from './user_main';
-// import { fetchUser } from '../../actions/user_actions';
-import { fetchImages } from '../../actions/image_actions';
-import { selectImages } from '../../reducers/selectors';
-import { withRouter } from 'react-router';
 
-const mapStateToProps = (state) => ({
-  images: selectImages(state),
-  user: state.user
-});
+const UserMainContainer = (props) => {
+  const mapStateToProps = (state) => {
+    return {
+      user: state.entities.users[props.userId],
+      projects: Object.values(state.entities.projects).filter(
+        project => project.user_id === parseInt(props.userId)
+      )
+    };
+  };
 
-const mapDispatchToProps = dispatch => ({
-  fetchImages: id => dispatch(fetchImages(id))
-});
+  const mapDispatchToProps = dispatch => ({
+    fetchUser: id => dispatch(fetchUser(id))
+  });
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserMain));
+  const ConnectedUserMain = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(UserMain);
+
+  return <ConnectedUserMain />;
+};
+
+export default UserMainContainer;

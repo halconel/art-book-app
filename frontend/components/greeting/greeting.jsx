@@ -1,43 +1,38 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-class Greeting extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+const Greeting = (props) => {
+  const navigate = useNavigate();
 
-  handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.props.logout();
-  }
+    props.logout();
+    navigate('/');
+  };
 
-  render() {
-    return (
-      <nav className="nav-right">
-        <div>
-            <Link to="/home">
-              <button className="header-button">
-                <p>Explore</p>
-              </button>
-            </Link>
+  return (
+    <nav className="nav-right">
+      <div>
+          <Link to="/home">
+            <button className="header-button">
+              <p>Explore</p>
+            </button>
+          </Link>
 
-            <Link to="/">
-              <button onClick={this.handleSubmit} className="header-button">
-                <p>Log Out</p>
-              </button>
-            </Link>
+          <Link to="/">
+            <button onClick={handleSubmit} className="header-button">
+              <p>Log Out</p>
+            </button>
+          </Link>
 
-            <Link to={`/users/${this.props.currentUser.id}`}>
-              <button className="header-button">
-                <p>My Profile</p>
-              </button>
-            </Link>
-        </div>
-      </nav>
-    );
-  }
+          <Link to={`/users/${props.currentUser.id}`}>
+            <button className="header-button">
+              <p>My Profile</p>
+            </button>
+          </Link>
+      </div>
+    </nav>
+  );
+};
 
-}
-
-export default withRouter(Greeting);
+export default Greeting;

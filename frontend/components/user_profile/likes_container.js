@@ -1,22 +1,21 @@
 import { connect } from 'react-redux';
+import { fetchUser } from '../../actions/user_actions';
 import Likes from './likes';
-import { fetchProject, clearProjects } from '../../actions/project_actions';
-import { selectProjectsByLikes } from '../../reducers/selectors';
-import { withRouter } from 'react-router';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user: state.user,
-    projects: selectProjectsByLikes(state)
+    user: state.entities.users[ownProps.match.params.id],
+    projects: Object.values(state.entities.projects).filter(
+      project => project.user_id === parseInt(ownProps.match.params.id)
+    )
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  fetchProject: id => dispatch(fetchProject(id)),
-  clearProjects: () => dispatch(clearProjects())
+  fetchUser: id => dispatch(fetchUser(id))
 });
 
-export default withRouter(connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Likes));
+)(Likes);

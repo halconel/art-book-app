@@ -1,7 +1,11 @@
 <script id="bootstrap-current-user" type="text/javascript">
   <% if logged_in? %>
-    window.currentUser = <%= render("api/users/user.json.jbuilder",
-    user: current_user).html_safe %>
+    window.currentUser = <%= render(
+      partial: 'api/users/user',
+      formats: [:json, :html],
+      locale: [:en, :ru],
+      handlers: [:erb, :builder, :raw, :ruby, :coffee, :jbuilder],
+      locals: { user: current_user }).html_safe %>
   <% end %>
 </script>
 

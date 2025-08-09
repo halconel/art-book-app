@@ -1,13 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Root from './components/root';
 import configureStore from './store/store';
 import { fetchImages } from './util/images_api_util';
 import initializeAnalytics from './analytics';
 
-
 document.addEventListener('DOMContentLoaded', () => {
-
   let store;
   if (window.currentUser) {
     const preloadedState = { session: { currentUser: window.currentUser, errors: [] } };
@@ -19,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     store = configureStore();
   }
 
-  const root = document.getElementById('root');
-  ReactDOM.render(<Root store={ store }/>, root);
+  const container = document.getElementById('root');
+  const root = createRoot(container);
+  root.render(<Root store={store} />);
 });

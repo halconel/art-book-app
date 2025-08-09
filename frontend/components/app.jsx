@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Route, HashRouter, Link, Switch, Redirect } from 'react-router-dom';
-import { AuthRoute, ProtectedRoute } from '../util/route_util';
+import { Route, HashRouter, Link, Routes, Navigate } from 'react-router-dom';
+import { ConnectedProtectedRoute, ConnectedAuthRoute } from '../util/route_util';
 
 import SessionFormContainer from './session_form/session_form_container';
 import GreetingContainer from './greeting/greeting_container';
@@ -14,19 +14,30 @@ const App = () => (
   <div>
     <header>
       <Link to="/home" className="header-link"><h1>ArtBook</h1></Link>
-      <AuthRoute path="/" component={SessionFormContainer} />
-      <ProtectedRoute path="/home" component={GreetingContainer} />
-      <ProtectedRoute path={`/users/:id`} component={GreetingContainer} />
+      <SessionFormContainer />
     </header>
 
     <main className="main">
-      <Route exact path="/" component={SplashContainer} />
-      <Route exact path="/home" component={SplashContainer} />
-      <ProtectedRoute path="/home" component={ProjectIndexContainer} />
-      <ProtectedRoute path="/users/:id" component={UserProfileContainer} />
+      <Routes>
+        <Route path="/" element={
+          <ConnectedAuthRoute>
+            <SplashContainer />
+          </ConnectedAuthRoute>
+        } />
+        <Route path="/home" element={
+          <ConnectedProtectedRoute>
+            <ProjectIndexContainer />
+          </ConnectedProtectedRoute>
+        } />
+        <Route path="/users/:id" element={
+          <ConnectedProtectedRoute>
+            <UserProfileContainer />
+          </ConnectedProtectedRoute>
+        } />
+      </Routes>
     </main>
 
-    <Route path="/" render={Footer}/>
+    <Footer />
   </div>
 );
 

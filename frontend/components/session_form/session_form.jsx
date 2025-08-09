@@ -1,213 +1,190 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
-import { Link, withRouter } from 'react-router-dom';
-import style from './modal_style';
+import { login, signup, clearErrors } from '../../actions/session_actions';
+import { connect } from 'react-redux';
 
-
-class SessionForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      email: '',
-      password: '',
-      modalOpen: false,
-      logIn: false,
-    };
-
-    this.closeModal = this.closeModal.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.guestLogin = this.guestLogin.bind(this);
-    this.guestSignup = this.guestSignup.bind(this);
-    this.switchForms = this.switchForms.bind(this);
+const style = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'white',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    padding: '20px',
+    maxWidth: '400px',
+    width: '90%'
+  },
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)'
   }
+};
 
-  update(field) {
-    return e => {
-      this.setState({[field]: e.currentTarget.value});
-    };
-  }
+const SessionForm = (props) => {
+  const navigate = useNavigate();
+  const [state, setState] = React.useState({
+    email: '',
+    username: '',
+    password: '',
+    modalOpen: false,
+    logIn: true
+  });
 
-  handleSubmit(e) {
+  const update = (field) => {
+    return e => setState({ ...state, [field]: e.currentTarget.value });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const user = this.state;
-    if (this.state.logIn) {
-      this.props.login(user);
-    } else {
-      this.props.signup(user);
-    }
-  }
-
-  guestSignup(e) {
-    e.preventDefault();
-
-    let name = "guest";
-    let email = "guest@gmail.com"
-    let pw = "password";
-
-    for ( let i = 0; i < name.length; i++ ) {
-        setTimeout(() => this.setState({
-            username: name.slice(0, i + 1)
-        }), i * 50);
-    }
-
-    if (!this.state.logIn) {
-      for ( let j = 0; j < email.length; j++ ) {
-          setTimeout(() => this.setState({
-              email: email.slice(0, j + 1)
-          }), (j + 9) * 50);
+    const user = Object.assign({}, state);
+    const processForm = (state.logIn) ? props.login : props.signup;
+    processForm(user).then(() => {
+      if (state.logIn) {
+        navigate('/home');
       }
-    }
+    });
+  };
 
-    for ( let k = 0; k < pw.length; k++ ) {
-      setTimeout(() => this.setState({
-        password: pw.slice(0, k + 1)
-      }), (k + 25) * 50);
-    }
-
-    setTimeout(() => this.props.login(this.state), 2000)
-  }
-
-  guestLogin(e) {
+  const guestSignup = (e) => {
     e.preventDefault();
-    let name = "guest";
-    let pw = "password";
+    const guestUser = {
+      username: 'guest',
+      password: 'password',
+      email: 'guest@example.com'
+    };
+    props.signup(guestUser).then(() => {
+      navigate('/home');
+    });
+  };
 
-    for ( let i = 0; i < name.length; i++ ) {
-        setTimeout(() => this.setState({
-            username: name.slice(0, i + 1)
-        }), i * 50);
-    }
+  const guestLogin = (e) => {
+    e.preventDefault();
+    const guestUser = {
+      username: 'guest',
+      password: 'password'
+    };
+    props.login(guestUser).then(() => {
+      navigate('/home');
+    });
+  };
 
-    for ( let k = 0; k < pw.length; k++ ) {
-      setTimeout(() => this.setState({
-        password: pw.slice(0, k + 1)
-      }), (k + 10) * 50);
-    }
-
-    setTimeout(() => this.props.login(this.state), 1300)
-  }
-
-  renderErrors() {
-    return(
-      <div className="session-errors">
-      <ul>
-        {this.props.errors.map((error, i) =>(
+  const renderErrors = () => {
+    return (
+      <ul className="errors">
+        {props.errors.map((error, i) => (
           <li key={`error-${i}`}>
             {error}
           </li>
         ))}
       </ul>
-      </div>
     );
-  }
+  };
 
-  closeModal() {
-    this.setState({ modalOpen: false });
-  }
+  const closeModal = () => {
+    setState({ ...state, modalOpen: false });
+  };
 
-  openModal(bool) {
-    this.props.clearErrors();
-    this.setState({
-      modalOpen: true,
-      logIn: bool
-    });
-  }
+  const openModal = (bool) => {
+    setState({ ...state, modalOpen: true, logIn: bool });
+  };
 
-  formHeader() {
-    return (this.state.logIn) ? <h3>Log in to ArtBook</h3> : <h3>Join ArtBook</h3>;
-  }
+  const formHeader = () => {
+    return (state.logIn) ? <h3>Log in to ArtBook</h3> : <h3>Join ArtBook</h3>;
+  };
 
-  formButton() {
-    return (this.state.logIn) ? "Log in" : "Sign up";
-  }
+  const formButton = () => {
+    return (state.logIn) ? "Log in" : "Sign up";
+  };
 
-  switchForms() {
-    this.props.clearErrors();
-    this.setState({
-      logIn: !this.state.logIn
-    });
-  }
+  const switchForms = () => {
+    props.clearErrors();
+    setState({ ...state, logIn: !state.logIn });
+  };
 
-  switchButton() {
-    return (this.state.logIn) ? <p>Don't have an account? Sign up</p> : <p>Already have an account? Log in</p>;
-  }
+  const switchButton = () => {
+    return (state.logIn) ? <p>Don't have an account? Sign up</p> : <p>Already have an account? Log in</p>;
+  };
 
-  emailInput() {
-    if (!this.state.logIn) {
+  const emailInput = () => {
+    if (!state.logIn) {
       return (
         <input type="text"
           className="login-input"
           placeholder="Email"
-          value={this.state.email}
-          onChange={this.update('email')}
+          value={state.email}
+          onChange={update('email')}
         />
       );
     }
-  }
+  };
 
-  render() {
-    return (
-      <nav className="nav-right">
+  return (
+    <nav className="nav-right">
 
-        <div className="header-group">
-          <button className="header-button" onClick={this.openModal.bind(this, true)}>Login</button>
-          <button className="header-button" onClick={this.openModal.bind(this, false)}>Sign up</button>
-        </div>
+      <div className="header-group">
+        <button className="header-button" onClick={() => openModal(true)}>Login</button>
+        <button className="header-button" onClick={() => openModal(false)}>Sign up</button>
+      </div>
 
-        <Modal
-          contentLabel="Modal"
-          isOpen={this.state.modalOpen}
-          onRequestClose={this.closeModal}
-          style={style}>
+      <Modal
+        contentLabel="Modal"
+        isOpen={state.modalOpen}
+        onRequestClose={closeModal}
+        style={style}>
 
-          <div className="login-form-container">
-            <div className="x-button">
-              <button onClick={this.closeModal}><i aria-hidden="true"></i></button>
+        <div className="login-form-container">
+          <div className="x-button">
+            <button onClick={closeModal}><i aria-hidden="true"></i></button>
+          </div>
+
+          <form className="login-form-box">
+            {formHeader()}
+            {renderErrors()}
+
+            <div className="login-form">
+              <input type="text"
+                className="login-input"
+                placeholder="Username"
+                value={state.username}
+                onChange={update('username')}
+              />
+
+              {emailInput()}
+
+              <input type="password"
+                className="login-input"
+                placeholder="Password"
+                value={state.password}
+                onChange={update('password')}
+              />
             </div>
 
-            <form className="login-form-box">
-              {this.formHeader()}
-              {this.renderErrors()}
+            <div className="session-button-container">
+              <button className="session-button" onClick={handleSubmit}>{formButton()}</button>
+              <button className="session-button" onClick={state.logIn ? guestLogin : guestSignup}>Guest</button>
+            </div>
 
-              <div className="login-form">
-                <input type="text"
-                  className="login-input"
-                  placeholder="Username"
-                  value={this.state.username}
-                  onChange={this.update('username')}
-                />
+            <a
+              href="/#"
+              className="switch-forms"
+              onClick={switchForms}
+            >
+              {switchButton()}
+            </a>
+          </form>
+        </div>
+      </Modal>
+    </nav>
+  );
+};
 
-                {this.emailInput()}
-
-                <input type="password"
-                  className="login-input"
-                  placeholder="Password"
-                  value={this.state.password}
-                  onChange={this.update('password')}
-                />
-              </div>
-
-              <div className="session-button-container">
-                <button className="session-button" onClick={this.handleSubmit}>{this.formButton()}</button>
-                <button className="session-button" onClick={this.state.logIn ? this.guestLogin : this.guestSignup}>Guest</button>
-              </div>
-
-              <a
-                href="/#"
-                className="switch-forms"
-                onClick={this.switchForms}
-              >
-                {this.switchButton()}
-              </a>
-            </form>
-          </div>
-        </Modal>
-      </nav>
-    );
-  }
-
-}
-
-export default withRouter(SessionForm);
+export default SessionForm;
