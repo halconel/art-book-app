@@ -1,0 +1,16 @@
+// Font definitions for Beyond Home application
+
+@font-face {
+  font-family: 'Andvari';
+  src: url('../assets/fonts/andvari.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+// CSS class for Beyond Home text
+.beyond-home-text {
+  font-family: 'Andvari', serif;
+  font-weight: normal;
+  font-style: normal;
+}

@@ -1,12 +1,5 @@
 <script id="bootstrap-current-user" type="text/javascript">
-  <% if logged_in? %>
-    window.currentUser = <%= render(
-      partial: 'api/users/user',
-      formats: [:json, :html],
-      locale: [:en, :ru],
-      handlers: [:erb, :builder, :raw, :ruby, :coffee, :jbuilder],
-      locals: { user: current_user }).html_safe %>
-  <% end %>
+  window.currentUser = null;
 </script>
 
 <main id="root">Oops, react is broken.</main>

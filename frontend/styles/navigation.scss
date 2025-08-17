@@ -1,0 +1,175 @@
+// Navigation Styles
+@use 'sass:color';
+
+// Variables
+$primary-color: #ffffff;
+$secondary-color: #2a2a2a;
+$accent-color: #888;
+$text-color: #ffffff;
+$light-text: #cccccc;
+$white: #ffffff;
+$black: #000000;
+$border-color: #444;
+$shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+$transition: all 0.3s ease;
+
+// Typography
+$font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  sans-serif;
+$font-secondary: 'Andvari', serif;
+
+// Layout
+$container-max-width: 1200px;
+
+// Mixins
+@mixin container {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+// Navigation
+.navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid $border-color;
+  z-index: 1000;
+  padding: 15px 0;
+
+  .nav-container {
+    @include container;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-brand {
+    text-decoration: none;
+    color: $primary-color;
+    display: flex;
+    align-items: stretch;
+    gap: 15px;
+    line-height: 1.2;
+
+    .nav-logo {
+      width: 45px;
+      height: 50px;
+      object-fit: contain;
+      flex-shrink: 0;
+      display: block;
+      filter: brightness(0) invert(1); // Make logo white for dark theme
+    }
+
+    .nav-brand-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      height: 45px; // Same height as logo
+    }
+
+    .artist-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: $primary-color;
+      line-height: 1.1;
+      margin: 0;
+      font-family: 'Andvari', serif;
+    }
+
+    .project-name {
+      font-size: 14px;
+      color: $primary-color;
+      font-weight: 400;
+      line-height: 1.2;
+      margin: 0;
+      font-family: 'Andvari', serif;
+    }
+  }
+
+  .nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 40px;
+  }
+
+  .nav-item {
+    .nav-link {
+      text-decoration: none;
+      color: $primary-color;
+      font-weight: 500;
+      font-size: 16px;
+      transition: $transition;
+      position: relative;
+      font-family: 'Andvari', serif;
+
+      &:hover {
+        color: $white;
+      }
+
+      &.active {
+        color: $white;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -5px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background-color: $white;
+        }
+      }
+    }
+  }
+
+  // Responsive design for mobile devices
+  @media (max-width: 768px) {
+    .nav-brand {
+      gap: 10px;
+
+      .nav-logo {
+        width: 35px;
+        height: 35px;
+        filter: brightness(0) invert(1); // Make logo white for dark theme
+      }
+
+      .nav-brand-text {
+        .artist-name {
+          font-size: 16px;
+          font-family: 'Andvari', serif;
+        }
+
+        .project-name {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .nav-menu {
+      gap: 20px;
+    }
+
+    .nav-item .nav-link {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .nav-container {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .nav-menu {
+      gap: 15px;
+    }
+  }
+}

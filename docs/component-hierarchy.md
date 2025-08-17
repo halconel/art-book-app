@@ -3,33 +3,39 @@
 **SplashContainer**
 
 **SessionFormContainer**
- - Modals:
-  * Sign In
-  * Sign Up
+
+- Modals:
+
+* Sign In
+* Sign Up
 
 **GreetingContainer**
-  * Sign In/ Sign Up
-  * Link to Homepage
+
+- Sign In/ Sign Up
+- Link to Homepage
 
 **HomeContainer**
-  * ProjectsIndex
+
+- ProjectsIndex
 
 **ProjectShowContainer**
-  * ProjectItem
-    * ProjectItemDetails
-    * ImagesIndex
-    * CommentForm
-    * CommentsIndex
-      * CommentItem
+
+- ProjectItem
+  - ProjectItemDetails
+  - ImagesIndex
+  - CommentForm
+  - CommentsIndex
+    - CommentItem
 
 **ProfileShowContainer**
- * User Detail
+
+- User Detail
 
 ## Routes
 
-|Path   | Component   |
-|-------|-------------|
-| "/" | "SplashContainer" |
-| "/home" | "HomeContainer" |
-| "/projects/id" | "ProjectShow" |
-| "/users/id" | "ProfileShow" |
+| Path           | Component         |
+| -------------- | ----------------- |
+| "/"            | "SplashContainer" |
+| "/home"        | "HomeContainer"   |
+| "/projects/id" | "ProjectShow"     |
+| "/users/id"    | "ProfileShow"     |

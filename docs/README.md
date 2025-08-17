@@ -17,11 +17,12 @@ ArtBook is a portfolio showcase web application inspired by Behance-- built with
 7. Comments
 
 ## Design Docs
-* [View Wireframes][wireframes]
-* [React Components][components]
-* [API endpoints][api-endpoints]
-* [DB schema][schema]
-* [Sample State][sample-state]
+
+- [View Wireframes][wireframes]
+- [React Components][components]
+- [API endpoints][api-endpoints]
+- [DB schema][schema]
+- [Sample State][sample-state]
 
 [wireframes]: wireframes
 [components]: component-hierarchy.md
@@ -55,8 +56,8 @@ ArtBook is a portfolio showcase web application inspired by Behance-- built with
 
 **Objective:** Users can comment on each others projects.
 
-
 ### Bonus Features
+
 - [ ] Follows: Users can follow each other.
 - [ ] Views: Project views and user views can be quantified.
 - [ ] Tags: Projects can be categorized.

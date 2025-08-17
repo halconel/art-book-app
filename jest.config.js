@@ -9,11 +9,11 @@ module.exports = {
   },
   testMatch: [
     '<rootDir>/frontend/__tests__/**/*.js',
-    '<rootDir>/frontend/__tests__/**/*.jsx'
+    '<rootDir>/frontend/__tests__/**/*.jsx',
   ],
   collectCoverageFrom: [
     'frontend/**/*.{js,jsx}',
     '!frontend/index.jsx',
-    '!frontend/__tests__/**'
-  ]
+    '!frontend/__tests__/**',
+  ],
 };

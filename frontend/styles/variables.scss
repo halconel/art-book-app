@@ -1,0 +1,76 @@
+// Цветовая палитра проекта
+$whiteish: #fdfffc;
+$light-gray: #ebebeb;
+$gray: #c0c0c0;
+
+$light-orange: #ff9f1c;
+$orange: #ff6700;
+$light-blue: #5697d8;
+$blue: #3a6ea5;
+$dark-blue: #004e98;
+$dark: #011627;
+
+$deep-red: #ed0300;
+$deep-blue: #2b2d42;
+$gray-blue: #8d99ae;
+$light-white: #fbfbff;
+$dark-white: #edf2f4;
+
+$light-black: #353535;
+$background: #f9f9f9;
+
+// Дополнительные цвета для компонентов
+$primary-color: $blue;
+$secondary-color: $gray;
+$success-color: #28a745;
+$danger-color: $deep-red;
+$warning-color: $light-orange;
+$info-color: $light-blue;
+$light-color: $light-white;
+$dark-color: $dark;
+
+// Размеры шрифтов
+$font-size-small: 0.875rem;
+$font-size-base: 1rem;
+$font-size-large: 1.25rem;
+$font-size-xlarge: 1.5rem;
+
+// Отступы
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 3rem;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Миксины
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin responsive($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: $breakpoint-sm) {
+      @content;
+    }
+  } @else if $breakpoint == md {
+    @media (min-width: $breakpoint-md) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-lg) {
+      @content;
+    }
+  } @else if $breakpoint == xl {
+    @media (min-width: $breakpoint-xl) {
+      @content;
+    }
+  }
+}

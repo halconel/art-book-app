@@ -5,14 +5,17 @@ export const CLEAR_IMAGES = 'CLEAR_IMAGES';
 
 export const receiveImages = images => ({
   type: RECEIVE_IMAGES,
-  images
+  images,
 });
 
 export const clearImages = () => ({
-  type: CLEAR_IMAGES
+  type: CLEAR_IMAGES,
 });
 
-export const fetchImages = (id) => dispatch => (
-  APIUtil.fetchImages(id)
-    .then(images => dispatch(receiveImages(images)))
-);
+export const fetchImages = id => dispatch =>
+  APIUtil.fetchImages(id).then(images => dispatch(receiveImages(images)));
+
+export const fetchMainPageImages = () => dispatch =>
+  APIUtil.fetchMainPageImages().then(images => {
+    dispatch(receiveImages(images));
+  });

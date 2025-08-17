@@ -3,7 +3,9 @@
 ## 📋 Обзор проекта
 
 ### Текущее состояние
+
 ArtBook App - это социальная платформа для множества художников с функциями:
+
 - ✅ Пользователи (регистрация, вход, профили)
 - ✅ Проекты (создание, просмотр, галерея изображений)
 - ✅ Лайки и комментарии
@@ -12,7 +14,9 @@ ArtBook App - это социальная платформа для множес
 - ✅ Rails API бэкенд
 
 ### Целевое состояние
+
 Персональный арт-бук для художника **Atom Sergal** с проектом **"Beyond Home"**:
+
 - 🎯 Один художник (Atom Sergal) - администратор
 - 🎯 Один проект (Beyond Home)
 - 🎯 Гости - только просмотр
@@ -24,6 +28,7 @@ ArtBook App - это социальная платформа для множес
 ### ✅ Этап 0: Настройка линтеров и инструментов качества (ЗАВЕРШЕН)
 
 **Выполненные задачи:**
+
 - ✅ Установлены Ruby линтеры (RuboCop 1.79.2)
 - ✅ Установлены JavaScript линтеры (ESLint 8.57.1)
 - ✅ Настроены pre-commit hooks с Husky
@@ -31,6 +36,7 @@ ArtBook App - это социальная платформа для множес
 - ✅ Создана документация по использованию линтеров
 
 **Файлы конфигурации:**
+
 - `.rubocop.yml` - настройки RuboCop
 - `.eslintrc.js` - настройки ESLint
 - `.prettierrc` - настройки Prettier
@@ -42,6 +48,7 @@ ArtBook App - это социальная платформа для множес
 #### 1.1 Аудит системы аутентификации
 
 **Текущие проблемы:**
+
 - ❌ Отсутствие JWT токенов
 - ❌ Нет refresh токенов
 - ❌ Отсутствие ролей пользователей
@@ -50,6 +57,7 @@ ArtBook App - это социальная платформа для множес
 - ❌ Простая сессионная аутентификация
 
 **Рекомендации по улучшению:**
+
 - ✅ Внедрение JWT токенов с refresh механизмом
 - ✅ Система ролей (admin, guest)
 - ✅ OAuth через Google/GitHub для гостей
@@ -58,6 +66,7 @@ ArtBook App - это социальная платформа для множес
 #### 1.2 Анализ референса [aidelank.com](https://aidelank.com/)
 
 **Ключевые особенности дизайна:**
+
 - Минималистичный дизайн
 - Четкая навигация (Resume, Showcase, Projects)
 - Фокус на визуальный контент
@@ -68,6 +77,7 @@ ArtBook App - это социальная платформа для множес
 #### 1.3 Техническое задание
 
 **Backend требования:**
+
 - Rails 7.1 API
 - PostgreSQL база данных
 - JWT аутентификация
@@ -76,6 +86,7 @@ ArtBook App - это социальная платформа для множес
 - Cloudinary для изображений
 
 **Frontend требования:**
+
 - React 18 с hooks
 - Современный CSS (Tailwind или Styled Components)
 - Адаптивный дизайн
@@ -118,18 +129,18 @@ end
 # app/models/user.rb
 class User < ApplicationRecord
   enum role: { guest: 0, admin: 1 }
-  
+
   validates :username, :password_digest, :session_token, presence: true
   validates :username, uniqueness: true
   validates :password, length: { minimum: 8 }, allow_nil: true
-  
+
   has_many :projects, dependent: :destroy
   has_many :images, through: :projects
-  
+
   # Убрать социальные ассоциации
   # has_many :likes, dependent: :destroy
   # has_many :comments, dependent: :destroy
-  
+
   # JWT методы
   def generate_jwt_token
     JWT.encode(
@@ -137,7 +148,7 @@ class User < ApplicationRecord
       Rails.application.secrets.secret_key_base
     )
   end
-  
+
   def generate_refresh_token
     self.refresh_token = SecureRandom.hex(32)
     save!
@@ -202,32 +213,32 @@ end
 # app/controllers/concerns/jwt_authenticatable.rb
 module JwtAuthenticatable
   extend ActiveSupport::Concern
-  
+
   def authenticate_user!
     token = extract_token_from_header
     @current_user = User.find_by(id: decode_token(token)[:user_id])
   rescue JWT::DecodeError
     render json: { error: 'Invalid token' }, status: :unauthorized
   end
-  
+
   def authenticate_admin!
     authenticate_user!
     unless @current_user.admin?
       render json: { error: 'Admin access required' }, status: :forbidden
     end
   end
-  
+
   private
-  
+
   def extract_token_from_header
     request.headers['Authorization']&.split(' ')&.last
   end
-  
+
   def decode_token(token)
     JWT.decode(
-      token, 
-      Rails.application.secrets.secret_key_base, 
-      true, 
+      token,
+      Rails.application.secrets.secret_key_base,
+      true,
       algorithm: 'HS256'
     )[0]
   end
@@ -241,7 +252,7 @@ end
 class Api::SessionsController < ApplicationController
   def login
     user = User.find_by_credentials(params[:username], params[:password])
-    
+
     if user
       render json: {
         user: user,
@@ -252,10 +263,10 @@ class Api::SessionsController < ApplicationController
       render json: { error: 'Invalid credentials' }, status: :unauthorized
     end
   end
-  
+
   def refresh
     user = User.find_by(refresh_token: params[:refresh_token])
-    
+
     if user
       render json: {
         token: user.generate_jwt_token,
@@ -265,7 +276,7 @@ class Api::SessionsController < ApplicationController
       render json: { error: 'Invalid refresh token' }, status: :unauthorized
     end
   end
-  
+
   def logout
     current_user&.update(refresh_token: nil)
     render json: { message: 'Logged out successfully' }
@@ -279,24 +290,24 @@ end
 # config/routes.rb
 Rails.application.routes.draw do
   root "static_pages#root"
-  
+
   namespace :api do
     # Основные страницы
     get 'project/beyond-home', to: 'projects#beyond_home'
     get 'artist/atom-sergal', to: 'users#atom_sergal'
     get 'gallery', to: 'images#gallery'
-    
+
     # Аутентификация
     post 'auth/login', to: 'sessions#login'
     post 'auth/refresh', to: 'sessions#refresh'
     delete 'auth/logout', to: 'sessions#logout'
-    
+
     # Админ функции
     namespace :admin do
       resources :projects, only: [:update]
       resources :images, only: [:create, :destroy]
     end
-    
+
     # Убрать социальные endpoints
     # resources :likes, only: [:create]
     # resources :comments, only: [:index, :create, :destroy]
@@ -354,7 +365,7 @@ frontend/
   --background-color: #ffffff;
   --background-dark: #f8f9fa;
   --border-color: #e9ecef;
-  
+
   // Типографика
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-size-xs: 0.75rem;
@@ -365,7 +376,7 @@ frontend/
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 1.875rem;
   --font-size-4xl: 2.25rem;
-  
+
   // Отступы
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -373,12 +384,12 @@ frontend/
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
-  
+
   // Тени
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  
+
   // Переходы
   --transition-fast: 150ms ease-in-out;
   --transition-normal: 300ms ease-in-out;
@@ -386,7 +397,7 @@ frontend/
 }
 
 // Темная тема
-[data-theme="dark"] {
+[data-theme='dark'] {
   --primary-color: #ecf0f1;
   --secondary-color: #bdc3c7;
   --text-color: #ecf0f1;
@@ -407,7 +418,7 @@ import Navigation from './Navigation';
 
 const Header = () => {
   const { user, logout } = useAuth();
-  
+
   return (
     <header className="header">
       <div className="header__container">
@@ -415,9 +426,9 @@ const Header = () => {
           <h1>Atom Sergal</h1>
           <span>Beyond Home</span>
         </div>
-        
+
         <Navigation />
-        
+
         {user && (
           <div className="header__user">
             <span>{user.username}</span>
@@ -447,33 +458,33 @@ import ProjectEdit from './ProjectEdit';
 const AdminPanel = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('project');
-  
+
   if (user?.role !== 'admin') {
     return <div className="admin-panel__error">Access denied</div>;
   }
-  
+
   return (
     <div className="admin-panel">
       <div className="admin-panel__header">
         <h1>Admin Panel</h1>
         <p>Manage Beyond Home project</p>
       </div>
-      
+
       <div className="admin-panel__tabs">
-        <button 
+        <button
           className={activeTab === 'project' ? 'active' : ''}
           onClick={() => setActiveTab('project')}
         >
           Project Settings
         </button>
-        <button 
+        <button
           className={activeTab === 'images' ? 'active' : ''}
           onClick={() => setActiveTab('images')}
         >
           Manage Images
         </button>
       </div>
-      
+
       <div className="admin-panel__content">
         {activeTab === 'project' && <ProjectEdit />}
         {activeTab === 'images' && <ImageUpload />}
@@ -495,19 +506,19 @@ import { uploadImage } from '../../services/apiService';
 const ImageUpload = () => {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
-  
-  const handleFileSelect = (event) => {
+
+  const handleFileSelect = event => {
     setFiles(Array.from(event.target.files));
   };
-  
+
   const handleUpload = async () => {
     setUploading(true);
-    
+
     try {
       for (const file of files) {
         await uploadImage(file);
       }
-      
+
       setFiles([]);
       alert('Images uploaded successfully!');
     } catch (error) {
@@ -516,11 +527,11 @@ const ImageUpload = () => {
       setUploading(false);
     }
   };
-  
+
   return (
     <div className="image-upload">
       <h2>Upload Images</h2>
-      
+
       <div className="image-upload__dropzone">
         <input
           type="file"
@@ -530,7 +541,7 @@ const ImageUpload = () => {
         />
         <p>Drag and drop images here or click to select</p>
       </div>
-      
+
       {files.length > 0 && (
         <div className="image-upload__preview">
           <h3>Selected files ({files.length})</h3>
@@ -539,10 +550,7 @@ const ImageUpload = () => {
               <li key={index}>{file.name}</li>
             ))}
           </ul>
-          <button 
-            onClick={handleUpload}
-            disabled={uploading}
-          >
+          <button onClick={handleUpload} disabled={uploading}>
             {uploading ? 'Uploading...' : 'Upload Images'}
           </button>
         </div>
@@ -601,6 +609,7 @@ git push heroku main
 ## 📊 Оценка времени и ресурсов
 
 ### Временные затраты
+
 - **Этап 1**: 1-2 дня (аудит и планирование)
 - **Этап 2**: 2-3 дня (модели данных)
 - **Этап 3**: 3-4 дня (backend рефакторинг)
@@ -611,11 +620,13 @@ git push heroku main
 **Общее время**: 14-20 дней
 
 ### Сложность
+
 - **Backend**: Средняя (миграции, JWT, API)
 - **Frontend**: Высокая (полный редизайн)
 - **Интеграция**: Средняя (API интеграция)
 
 ### Риски
+
 - Совместимость с существующим кодом
 - Миграция данных
 - Производительность при загрузке изображений
@@ -624,6 +635,7 @@ git push heroku main
 ## 🎯 Критерии успеха
 
 ### Функциональные требования
+
 - ✅ Один художник (Atom Sergal) с правами администратора
 - ✅ Один проект (Beyond Home) с галереей изображений
 - ✅ Гости могут просматривать контент без регистрации
@@ -631,6 +643,7 @@ git push heroku main
 - ✅ Админ панель для управления контентом
 
 ### Нефункциональные требования
+
 - ✅ Минималистичный дизайн в стиле aidelank.com
 - ✅ Адаптивный дизайн для всех устройств
 - ✅ Быстрая загрузка страниц (< 3 секунд)
@@ -638,6 +651,7 @@ git push heroku main
 - ✅ SEO оптимизация
 
 ### Технические требования
+
 - ✅ Ruby 3.4.4 + Rails 7.1.5
 - ✅ React 18 + современные хуки
 - ✅ PostgreSQL + Cloudinary
@@ -647,16 +661,19 @@ git push heroku main
 ## 📚 Дополнительные ресурсы
 
 ### Документация
+
 - [LINTING_SETUP.md](./LINTING_SETUP.md) - Настройка линтеров
 - [API_ENDPOINTS.md](./docs/api-endpoints.md) - API документация
 - [DESIGN_SYSTEM.md](./docs/design-system.md) - Дизайн система
 
 ### Референсы
+
 - [aidelank.com](https://aidelank.com/) - Основной референс дизайна
 - [JWT.io](https://jwt.io/) - Документация JWT
 - [Rails 7.1 Guide](https://guides.rubyonrails.org/) - Rails документация
 
 ### Инструменты
+
 - RuboCop - Ruby линтер
 - ESLint - JavaScript линтер
 - Prettier - Форматирование кода
