@@ -56,8 +56,7 @@ module Api
     private
 
     def image_params
-      params.require(:image).permit(:caption, :img_url, :project_id, :show_on_main_page,
-                                    :crop_x, :crop_y, :crop_width, :crop_height)
+      params.require(:image).permit(:caption, :img_url, :project_id, :show_on_main_page)
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_16_231459) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_17_013003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,10 +21,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_16_231459) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "show_on_main_page", default: false
-    t.decimal "crop_x", precision: 5, scale: 2, default: "0.0"
-    t.decimal "crop_y", precision: 5, scale: 2, default: "0.0"
-    t.decimal "crop_width", precision: 5, scale: 2, default: "1.0"
-    t.decimal "crop_height", precision: 5, scale: 2, default: "1.0"
     t.index ["project_id"], name: "index_images_on_project_id"
   end
 
