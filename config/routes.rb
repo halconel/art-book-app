@@ -27,18 +27,39 @@ Rails.application.routes.draw do
 
     # Admin routes
     namespace :admin do
-      resources :users, only: [:create, :show]
-      resources :projects, only: [:update, :create]
-      resources :images, only: [:create, :destroy]
+      resources :users, only: [:index, :show, :create, :update, :destroy]
+      
+      resources :orders, only: [:index, :show, :create, :update, :destroy] do
+        member do
+          post :create_cycle_pack
+        end
+      end
+      
+      resources :projects, only: [:index, :show, :create, :update, :destroy]
+      
+      resources :images, only: [:index, :show, :create, :update, :destroy] do
+        collection do
+          patch :bulk_update
+        end
+        member do
+          patch :toggle_main_page
+        end
+      end
     end
 
     # Client routes
     namespace :client do
       resources :orders, only: [:index, :show]
-      resources :future_arts, only: [:index, :show]
+      
       resource :workload_calendar, only: [:show]
-      resources :notifications, only: [:index, :update]
-      resources :refund_requests, only: [:create, :index]
+      
+      resources :notifications, only: [:index, :show, :update] do
+        collection do
+          patch :bulk_update
+        end
+      end
+      
+      resources :refund_requests, only: [:index, :show, :create]
     end
   end
 end

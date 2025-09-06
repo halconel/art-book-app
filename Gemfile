@@ -105,3 +105,6 @@ gem 'rack-cors'
 
 # Шифрование данных
 gem 'attr_encrypted'
+
+# Пагинация
+gem 'kaminari'
