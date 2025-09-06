@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       post 'register', to: 'registrations#create'
       get 'verify/:token', to: 'registrations#verify'
       post 'resend_verification', to: 'registrations#resend_verification'
+      get 'me', to: 'me#show'
     end
 
     # Main pages

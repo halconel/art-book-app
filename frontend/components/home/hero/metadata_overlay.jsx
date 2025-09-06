@@ -17,9 +17,10 @@ const MetadataOverlay = ({ image }) => {
 
   const truncateTitle = (title, maxLength = 20) => {
     if (!title) return 'Test Artwork';
-    return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
+    return title.length > maxLength
+      ? `${title.substring(0, maxLength)}...`
+      : title;
   };
-
 
   return (
     <div className="metadata-overlay">
