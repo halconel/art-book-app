@@ -20,6 +20,10 @@ import ClientManagement from './admin/ClientManagement';
 import OrdersKanban from './admin/OrdersKanban';
 import WorkloadCalendar from './admin/WorkloadCalendar';
 import ProjectManagement from './admin/ProjectManagement';
+import OrderDetail from './client/OrderDetail';
+import ArtistWorkloadCalendar from './client/ArtistWorkloadCalendar';
+import Notifications from './client/Notifications';
+import ClientProfile from './client/ClientProfile';
 
 const theme = createTheme({
   palette: {
@@ -114,22 +118,10 @@ const App = () => {
             }
           >
             <Route index element={<ClientDashboard />} />
-            <Route
-              path="orders"
-              element={<div>Client Orders (Coming Soon)</div>}
-            />
-            <Route
-              path="calendar"
-              element={<div>Client Calendar (Coming Soon)</div>}
-            />
-            <Route
-              path="notifications"
-              element={<div>Client Notifications (Coming Soon)</div>}
-            />
-            <Route
-              path="refunds"
-              element={<div>Client Refunds (Coming Soon)</div>}
-            />
+            <Route path="orders/:orderId" element={<OrderDetail />} />
+            <Route path="workload" element={<ArtistWorkloadCalendar />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="profile" element={<ClientProfile />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

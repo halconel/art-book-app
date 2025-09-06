@@ -2,25 +2,54 @@
 
 module Api
   module Client
-    class WorkloadCalendarController < BaseController
-      def show
-        year = params[:year]&.to_i || Date.current.year
+    class WorkloadController < BaseController
+      def index
+        start_date = Date.parse(params[:start_date]) if params[:start_date]
+        end_date = Date.parse(params[:end_date]) if params[:end_date]
+        
+        # Default to current month if no dates provided
+        start_date ||= Date.current.beginning_of_month
+        end_date ||= Date.current.end_of_month
 
-        # GitHub-like календарные данные
-        calendar_data = WorkloadCalendar.for_github_calendar(year)
-
-        # Общая статистика (без персональных проектов)
-        stats = workload_statistics(year)
+        # Get workload data for the date range
+        calendar_data = WorkloadCalendar.for_date_range(start_date, end_date)
+                                       .map { |day| format_calendar_day(day) }
 
         render json: {
-          calendar_data: calendar_data,
-          statistics: stats,
-          year: year,
-          available_years: available_years
+          calendar: calendar_data,
+          start_date: start_date,
+          end_date: end_date
         }
       end
 
       private
+
+      def format_calendar_day(workload_day)
+        {
+          date: workload_day.date,
+          cycles_completed: workload_day.cycles_completed,
+          intensity_level: calculate_intensity_level(workload_day.cycles_completed),
+          is_personal_project: workload_day.is_personal_project,
+          notes: workload_day.notes
+        }
+      end
+
+      def calculate_intensity_level(cycles)
+        case cycles
+        when 0
+          0
+        when 1..2
+          1
+        when 3..5
+          2
+        when 6..8
+          3
+        when 9..12
+          4
+        else
+          5
+        end
+      end
 
       def workload_statistics(year)
         start_date = Date.new(year, 1, 1)

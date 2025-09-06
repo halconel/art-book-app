@@ -9,15 +9,17 @@ import {
   Avatar,
   LinearProgress,
   IconButton,
-  Chip
+  Chip,
 } from '@mui/material';
-import {
-  MoreVert,
-  Person,
-  Edit
-} from '@mui/icons-material';
+import { MoreVert, Person, Edit } from '@mui/icons-material';
 
-const OrderCard = ({ order, onMenuClick, onEdit, getProgressPercentage, getPriorityColor }) => (
+const OrderCard = ({
+  order,
+  onMenuClick,
+  onEdit,
+  getProgressPercentage,
+  getPriorityColor,
+}) => (
   <Card sx={{ mb: 2, border: '1px solid', borderColor: 'divider' }}>
     <CardContent sx={{ pb: 1 }}>
       <Box
@@ -58,7 +60,8 @@ const OrderCard = ({ order, onMenuClick, onEdit, getProgressPercentage, getPrior
               Progress
             </Typography>
             <Typography variant="body2" color="textSecondary">
-              {order.total_cycles_completed || 0} / {order.estimated_cycles} cycles
+              {order.total_cycles_completed || 0} / {order.estimated_cycles}{' '}
+              cycles
             </Typography>
           </Box>
           <LinearProgress
@@ -82,7 +85,7 @@ const OrderCard = ({ order, onMenuClick, onEdit, getProgressPercentage, getPrior
         )}
       </Box>
     </CardContent>
-    
+
     <CardActions sx={{ pt: 0, px: 2, pb: 2 }}>
       <Button size="small" onClick={() => onEdit(order)}>
         <Edit sx={{ mr: 0.5, fontSize: 16 }} />

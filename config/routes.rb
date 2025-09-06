@@ -59,9 +59,11 @@ Rails.application.routes.draw do
 
     # Client routes
     namespace :client do
+      resource :dashboard, only: [:show], controller: 'dashboard', action: 'index'
+      
       resources :orders, only: [:index, :show]
       
-      resource :workload_calendar, only: [:show]
+      resources :workload, only: [:index]
       
       resources :notifications, only: [:index, :show, :update] do
         collection do

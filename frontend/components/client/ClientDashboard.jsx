@@ -3,12 +3,11 @@ import {
   Grid,
   Card,
   CardContent,
+  CardActions,
   Typography,
   Box,
   Paper,
-  List,
-  ListItem,
-  ListItemText,
+  Button,
   Chip,
   CircularProgress,
   LinearProgress,
@@ -19,6 +18,7 @@ import {
   CheckCircle,
   Pending,
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import api from '../../services/authService';
 
 const StatCard = ({ title, value, icon, color = 'primary' }) => (
@@ -46,6 +46,7 @@ const StatCard = ({ title, value, icon, color = 'primary' }) => (
 );
 
 const ClientDashboard = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
@@ -157,63 +158,142 @@ const ClientDashboard = () => {
         </Grid>
       </Grid>
 
-      <Paper sx={{ p: 2 }}>
-        <Typography variant="h6" gutterBottom>
-          My Orders
-        </Typography>
-        <List>
-          {orders.length > 0 ? (
-            orders.map(order => (
-              <ListItem key={order.id} divider>
-                <ListItemText
-                  primary={
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Typography variant="h6">{order.title}</Typography>
-                      <Chip
-                        label={order.status}
-                        color={getStatusColor(order.status)}
-                        size="small"
+      <Grid container spacing={3}>
+        {orders.length > 0 ? (
+          orders.map(order => (
+            <Grid item xs={12} md={6} key={order.id}>
+              <Card sx={{ height: '100%' }}>
+                <CardContent>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start',
+                      mb: 2,
+                    }}
+                  >
+                    <Typography variant="h6" component="div">
+                      {order.title}
+                    </Typography>
+                    <Chip
+                      label={order.status}
+                      color={getStatusColor(order.status)}
+                      size="small"
+                    />
+                  </Box>
+
+                  {order.description && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 2 }}
+                    >
+                      {order.description.length > 100
+                        ? `${order.description.substring(0, 100)}...`
+                        : order.description}
+                    </Typography>
+                  )}
+
+                  <Box sx={{ mb: 2 }}>
+                    <Typography variant="caption" color="text.secondary">
+                      Created: {new Date(order.created_at).toLocaleDateString()}
+                    </Typography>
+                    {order.deadline && (
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ ml: 2 }}
+                      >
+                        Deadline:{' '}
+                        {new Date(order.deadline).toLocaleDateString()}
+                      </Typography>
+                    )}
+                  </Box>
+
+                  {order.estimated_cycles && (
+                    <Box sx={{ mb: 2 }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          mb: 1,
+                        }}
+                      >
+                        <Typography variant="body2" color="text.secondary">
+                          Progress
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {order.total_cycles_completed || 0} /{' '}
+                          {order.estimated_cycles} cycles
+                        </Typography>
+                      </Box>
+                      <LinearProgress
+                        variant="determinate"
+                        value={getProgressPercentage(order)}
+                        sx={{ height: 8, borderRadius: 4 }}
                       />
                     </Box>
-                  }
-                  secondary={
-                    <Box>
-                      <Typography variant="body2" color="textSecondary">
-                        {order.description}
+                  )}
+
+                  {order.cycle_packs && order.cycle_packs.length > 0 && (
+                    <Box sx={{ mb: 2 }}>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        gutterBottom
+                      >
+                        Cycle Packs:
                       </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        Created:{' '}
-                        {new Date(order.created_at).toLocaleDateString()}
-                        {order.deadline &&
-                          ` • Deadline: ${new Date(
-                            order.deadline
-                          ).toLocaleDateString()}`}
-                      </Typography>
-                      {order.estimated_cycles && (
-                        <Box sx={{ mt: 1 }}>
-                          <Typography variant="body2" color="textSecondary">
-                            Progress: {order.total_cycles_completed || 0} /{' '}
-                            {order.estimated_cycles} cycles
-                          </Typography>
-                          <LinearProgress
-                            variant="determinate"
-                            value={getProgressPercentage(order)}
-                            sx={{ mt: 0.5, height: 6, borderRadius: 3 }}
+                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                        {order.cycle_packs.map(pack => (
+                          <Chip
+                            key={pack.id}
+                            label={`Pack ${pack.pack_number}`}
+                            variant="outlined"
+                            size="small"
+                            color={
+                              pack.status === 'completed'
+                                ? 'success'
+                                : pack.status === 'in_progress'
+                                ? 'info'
+                                : 'default'
+                            }
                           />
-                        </Box>
-                      )}
+                        ))}
+                      </Box>
                     </Box>
-                  }
-                />
-              </ListItem>
-            ))
-          ) : (
-            <Typography color="textSecondary" align="center" py={4}>
-              No orders yet
-            </Typography>
-          )}
-        </List>
-      </Paper>
+                  )}
+                </CardContent>
+                <CardActions>
+                  <Button
+                    size="small"
+                    onClick={() => navigate(`/client/orders/${order.id}`)}
+                  >
+                    View Details
+                  </Button>
+                  {order.status !== 'completed' &&
+                    order.status !== 'cancelled' && (
+                      <Button size="small" color="secondary">
+                        Request Update
+                      </Button>
+                    )}
+                </CardActions>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          <Grid item xs={12}>
+            <Paper sx={{ p: 4, textAlign: 'center' }}>
+              <Typography color="textSecondary" variant="h6">
+                No orders yet
+              </Typography>
+              <Typography color="textSecondary" variant="body2" sx={{ mt: 1 }}>
+                Contact the artist to create your first order
+              </Typography>
+            </Paper>
+          </Grid>
+        )}
+      </Grid>
     </Box>
   );
 };
