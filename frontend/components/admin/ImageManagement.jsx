@@ -41,9 +41,13 @@ import {
   Search,
 } from '@mui/icons-material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useNotification } from '../../contexts/NotificationContext';
+import { useConfirmation } from '../../contexts/ConfirmationContext';
 import api from '../../services/authService';
 
 const ImageManagement = () => {
+  const { showSuccess, showError, showWarning } = useNotification();
+  const { confirmDelete } = useConfirmation();
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -79,9 +83,8 @@ const ImageManagement = () => {
       setLoading(true);
       const response = await api.get('/admin/images');
       setImages(response.data.images || []);
-      setError('');
     } catch (err) {
-      setError('Failed to fetch images');
+      showError('Failed to fetch images. Please try again.');
       console.error('Failed to fetch images:', err);
     } finally {
       setLoading(false);
@@ -111,19 +114,18 @@ const ImageManagement = () => {
         });
       }
 
-      setSuccess(
+      showSuccess(
         editingImage
           ? 'Image updated successfully'
           : 'Image created successfully'
       );
-      setTimeout(() => setSuccess(''), 3000);
 
       setOpenDialog(false);
       setEditingImage(null);
       resetForm();
       fetchImages();
     } catch (err) {
-      setError('Failed to save image');
+      showError('Failed to save image. Please try again.');
       console.error('Failed to save image:', err);
     } finally {
       setUploading(false);
@@ -131,15 +133,20 @@ const ImageManagement = () => {
   };
 
   const handleDeleteImage = async imageId => {
-    if (!window.confirm('Are you sure you want to delete this image?')) return;
+    const image = images.find(img => img.id === imageId);
+    const confirmed = await confirmDelete(image?.title || `Image #${imageId}`, {
+      details:
+        'This will permanently remove the image from your gallery and cannot be undone.',
+    });
+
+    if (!confirmed) return;
 
     try {
       await api.delete(`/admin/images/${imageId}`);
-      setSuccess('Image deleted successfully');
-      setTimeout(() => setSuccess(''), 3000);
+      showSuccess('Image deleted successfully');
       fetchImages();
     } catch (err) {
-      setError('Failed to delete image');
+      showError('Failed to delete image. Please try again.');
       console.error('Failed to delete image:', err);
     }
   };

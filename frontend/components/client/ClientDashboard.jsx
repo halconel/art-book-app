@@ -19,6 +19,7 @@ import {
   Pending,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from '../../contexts/NotificationContext';
 import api from '../../services/authService';
 
 const StatCard = ({ title, value, icon, color = 'primary' }) => (
