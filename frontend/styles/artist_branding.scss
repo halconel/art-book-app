@@ -1,0 +1,130 @@
+.artist-branding {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  align-items: flex-start;
+
+  .artist-branding-block {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 40px;
+  }
+
+  .bottom-top-gradient-shadow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+    mix-blend-mode: multiply;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  &__logo {
+    align-self: center;
+    
+    &-icon {
+      height: 110px;
+      filter: invert(1); // Make logo white
+    }
+  }
+
+  &__content {
+    color: white;
+  }
+
+  &__name {
+    font-size: 3.0rem;
+    font-weight: 300;
+    font-family: 'Andvari';
+    letter-spacing: 0.1em;
+    margin: 0;
+    color: white;
+    text-transform: uppercase;
+  }
+
+  &__subtitle {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.05em;
+  }
+
+  &__separator {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  &__tagline-wrapper {
+    align-items: center;
+    width: 212px;
+    justify-content: center;
+  }
+  
+  &__tagline {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0.5rem 0 0 0;
+    letter-spacing: 0.05em;
+  }
+
+  // Responsive adjustments
+  @media (max-width: 1024px) {
+    padding: 1.5rem 2rem;
+    bottom: 2rem;
+    gap: 2rem;
+
+    &__name {
+      font-size: 2.5rem;
+    }
+
+    &__logo-icon {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+    bottom: 1rem;
+
+    &__logo {
+      justify-self: center;
+    }
+
+    &__content {
+      text-align: center;
+    }
+
+    &__row {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    &__name {
+      font-size: 2rem;
+    }
+
+    &__logo-icon {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}

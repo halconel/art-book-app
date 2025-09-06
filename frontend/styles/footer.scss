@@ -1,0 +1,215 @@
+// Footer Styles
+.main-footer {
+  background: linear-gradient(135deg, #cc3333, #aa2222);
+  color: white;
+  height: 30vh;
+  padding: 40px 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+  
+  .waved-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(255,255,255,0.08) 0%, transparent 50%);
+    background-size: 100px 100px, 150px 150px, 200px 200px;
+    opacity: 0.3;
+    animation: wave 20s ease-in-out infinite;
+  }
+
+  @keyframes wave {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  
+  .footer-left {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+  }
+  
+  .social-section,
+  .nav-section {
+    h3 {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 25px;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+      color: white;
+    }
+  }
+  
+  .social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+    .social-link {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-family: 'Courier New', monospace;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      
+      .social-icon {
+        margin-right: 10px;
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+      }
+      
+      &:hover {
+        color: #ffeeee;
+        transform: translateX(5px);
+      }
+    }
+  }
+  
+  .nav-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+    .nav-button {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      text-align: center;
+      border: 2px solid transparent;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+      
+      &.active {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+  
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 20px;
+    
+    .scanning-svg {
+      .scanning-image {
+        width: 120px;
+        height: auto;
+        filter: invert(1) brightness(0.9);
+        opacity: 0.8;
+      }
+    }
+    
+    .footer-logo {
+      text-align: right;
+      
+      .logo-text {
+        font-size: 32px;
+        font-weight: 900;
+        font-family: 'Arial', sans-serif;
+        letter-spacing: 3px;
+        margin-bottom: 5px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      
+      .logo-tagline {
+        font-size: 14px;
+        font-weight: 600;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 2px;
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .main-footer {
+    height: auto;
+    min-height: 30vh;
+    padding: 30px 0;
+    
+    .footer-container {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 0 20px;
+    }
+    
+    .footer-left {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    
+    .footer-right {
+      justify-content: center;
+      
+      .footer-logo {
+        text-align: center;
+        
+        .logo-text {
+          font-size: 24px;
+          letter-spacing: 2px;
+        }
+        
+        .logo-tagline {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .main-footer {
+    .social-links {
+      .social-link {
+        font-size: 12px;
+        
+        .social-icon {
+          font-size: 14px;
+        }
+      }
+    }
+    
+    .nav-buttons {
+      .nav-button {
+        padding: 10px 15px;
+        font-size: 12px;
+      }
+    }
+  }
+}

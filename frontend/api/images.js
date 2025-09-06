@@ -7,11 +7,3 @@ export const fetchImages = data => {
     return response.json();
   });
 };
-
-export const fetchMainPageImages = () =>
-  fetch('/api/main-page-images').then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  });

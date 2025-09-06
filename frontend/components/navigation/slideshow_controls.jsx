@@ -1,4 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import {
+  previousImage,
+  nextImage,
+  togglePlayPauseAndUpdateTime,
+} from '../../actions/slideshow_actions';
+import ProgressRing from '../ui/progress_ring';
 
 const SlideshowControls = ({
   totalImages,
@@ -9,6 +16,12 @@ const SlideshowControls = ({
   onTogglePlay,
 }) => {
   const [progress, setProgress] = useState(0);
+  const lastChangeTimeRef = useRef(lastChangeTime);
+
+  // Update ref when lastChangeTime changes
+  useEffect(() => {
+    lastChangeTimeRef.current = lastChangeTime;
+  }, [lastChangeTime]);
 
   // Progress animation for slideshow
   useEffect(() => {
@@ -21,72 +34,101 @@ const SlideshowControls = ({
     const interval = 50; // Update every 50ms for smooth animation
 
     const timer = setInterval(() => {
-      const elapsed = Date.now() - lastChangeTime;
+      const elapsed = Date.now() - lastChangeTimeRef.current;
       const newProgress = Math.min((elapsed / duration) * 100, 100);
       setProgress(newProgress);
     }, interval);
 
     return () => clearInterval(timer);
-  }, [isPlaying, totalImages, lastChangeTime]);
+  }, [isPlaying, totalImages]);
 
   if (totalImages === 0) return null;
 
   return (
     <div className="slideshow-controls">
       <button
-        className="slideshow-control-btn prev-btn"
+        className="slideshow-control-btn prev-btn circular-notch"
         onClick={onPrevious}
         title="Previous Image"
       >
-        <i className="fa fa-chevron-left" />
+        <div className="notch-left">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M12 15L7 10L12 5"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
       </button>
 
       <div className="play-pause-container">
-        <svg className="progress-ring" width="60" height="60">
-          <circle
-            className="progress-ring-circle-bg"
-            stroke="rgba(255, 255, 255, 0.2)"
-            strokeWidth="3"
-            fill="transparent"
-            r="26"
-            cx="30"
-            cy="30"
-          />
-          <circle
-            className="progress-ring-circle"
-            stroke="rgba(255, 255, 255, 0.8)"
-            strokeWidth="3"
-            fill="transparent"
-            r="26"
-            cx="30"
-            cy="30"
-            strokeDasharray={`${2 * Math.PI * 26}`}
-            strokeDashoffset={`${2 * Math.PI * 26 * (1 - progress / 100)}`}
-            style={{
-              transform: 'rotate(-90deg)',
-              transformOrigin: '30px 30px',
-              transition: 'stroke-dashoffset 0.05s linear',
-            }}
-          />
-        </svg>
+        <ProgressRing progress={progress} />
         <button
           className="slideshow-control-btn play-pause-btn"
           onClick={onTogglePlay}
           title={isPlaying ? 'Pause Slideshow' : 'Play Slideshow'}
         >
-          <i className={`fa fa-${isPlaying ? 'pause' : 'play'}`} />
+          {isPlaying ? (
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect
+                x="3"
+                y="2"
+                width="3"
+                height="12"
+                fill="currentColor"
+                rx="0.5"
+              />
+              <rect
+                x="10"
+                y="2"
+                width="3"
+                height="12"
+                fill="currentColor"
+                rx="0.5"
+              />
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M5 3L13 8L5 13V3Z" fill="currentColor" />
+            </svg>
+          )}
         </button>
       </div>
 
       <button
-        className="slideshow-control-btn next-btn"
+        className="slideshow-control-btn next-btn circular-notch"
         onClick={onNext}
         title="Next Image"
       >
-        <i className="fa fa-chevron-right" />
+        <div className="notch-right">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M8 5L13 10L8 15"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
       </button>
     </div>
   );
 };
 
-export default SlideshowControls;
+const mapStateToProps = state => ({
+  totalImages: Object.values(state.images).length,
+  isPlaying: state.slideshow.isPlaying,
+  lastChangeTime: state.slideshow.lastChangeTime,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onPrevious: () => dispatch(previousImage()),
+  onNext: () => dispatch(nextImage()),
+  onTogglePlay: () => dispatch(togglePlayPauseAndUpdateTime()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SlideshowControls);

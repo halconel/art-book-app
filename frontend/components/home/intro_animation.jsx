@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import logoSrc from '../../assets/images/favicon.svg';
 
-const useIntroAnimation = (images) => {
+const useIntroAnimation = images => {
   const [showIntroAnimation, setShowIntroAnimation] = useState(true);
   const [animationStage, setAnimationStage] = useState(0); // 0: logo visible, 1: fade out, 2: scale up, 3: remove
 

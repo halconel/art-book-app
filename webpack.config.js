@@ -1,6 +1,5 @@
 var path = require('path');
 var webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
 
 var plugins = []; // if using any plugins for both dev and production
 var devPlugins = []; // if using any plugins for development
@@ -78,15 +77,4 @@ module.exports = {
     extensions: ['.js', '.jsx', '.css', '.scss', '*'],
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  optimization: {
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          compress: {
-            warnings: true,
-          },
-        },
-      }),
-    ],
-  },
 };

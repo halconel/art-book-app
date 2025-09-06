@@ -8,34 +8,44 @@
   margin: 0 20px;
 
   .slideshow-control-btn {
-    background: none;
+    background: rgba(255, 255, 255, 0.9);
     border: none;
-    color: white;
-    font-size: 18px;
+    color: #333;
     cursor: pointer;
-    padding: 8px;
-    border-radius: 50%;
+    padding: 0;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 45px;
     height: 45px;
+    border-radius: 50%;
 
     &:hover {
       transform: scale(1.1);
+      background: rgba(255, 255, 255, 1);
     }
 
-    i {
-      font-size: 16px;
+    &.circular-notch {
+      position: relative;
+      background: rgba(255, 255, 255, 0.9);
+      
+      svg {
+        color: #333;
+      }
     }
 
     &.play-pause-btn {
       width: 50px;
       height: 50px;
+      color:  rgba(255, 255, 255, 0.9);
       
-      i {
-        font-size: 18px;
+      svg {
+        color: #333;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 1);
       }
     }
   }

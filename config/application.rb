@@ -11,6 +11,9 @@ module BeyondHome
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
+    # Use credentials instead of secrets.yml
+    config.secret_key_base = Rails.application.credentials.secret_key_base
+
     # Disable Sprockets since we're using webpack for all assets
     config.assets.enabled = false
 

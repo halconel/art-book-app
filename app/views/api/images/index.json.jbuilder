@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
-@images.each do |image|
-  json.set! image.id do
-    json.id image.id
-    json.caption image.caption
-    json.project_id image.project_id
-    json.img_url image.img_url
+json.images do
+  @images.each do |image|
+    json.set! image.id do
+      json.partial! '/api/images/image', image: image
+    end
   end
+end
+
+json.pagination do
+  json.has_more @has_more
+  json.after @after
 end

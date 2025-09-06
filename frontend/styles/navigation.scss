@@ -36,9 +36,9 @@ $container-max-width: 1200px;
   right: 0;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 1000;
-  padding: 15px 0;
+  padding: 20px 0;
 
   .nav-container {
     @include container;
@@ -75,11 +75,13 @@ $container-max-width: 1200px;
 
     .artist-name {
       font-size: 20px;
-      font-weight: 700;
+      font-weight: 900;
       color: $primary-color;
       line-height: 1.1;
       margin: 0;
-      font-family: 'Andvari', serif;
+      font-family: 'Arial', sans-serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .project-name {
@@ -109,25 +111,59 @@ $container-max-width: 1200px;
       transition: $transition;
       position: relative;
       font-family: 'Andvari', serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .nav-separator {
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+
+        .separator-icon {
+          width: 12px;
+          height: 12px;
+          color: inherit;
+          transition: all 0.2s ease;
+        }
+
+        &.animating .separator-icon {
+          animation: pathTransform 0.4s ease-in-out;
+        }
+      }
 
       &:hover {
-        color: $white;
+        color: #00ff00;
       }
 
       &.active {
-        color: $white;
-
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: -5px;
-          left: 0;
-          right: 0;
-          height: 2px;
-          background-color: $white;
-        }
+        color: #00ff00;
       }
     }
+    
+    &.active .nav-link {
+      color: #00ff00;
+      
+      .nav-separator .separator-icon {
+        color: #00ff00;
+      }
+    }
+
+    &:hover .nav-link:not(.active) {
+      color: #00ff00;
+      
+      .nav-separator .separator-icon {
+        color: #00ff00;
+      }
+    }
+  }
+
+  @keyframes pathTransform {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(45deg) scale(1.2); }
+    100% { transform: rotate(90deg) scale(1); }
   }
 
   // Responsive design for mobile devices

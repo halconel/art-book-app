@@ -7,7 +7,6 @@ Rails.application.routes.draw do
     # Main pages
     get 'project/beyond-home', to: 'projects#beyond_home'
     get 'artist/atom-sergal', to: 'users#atom_sergal'
-    get 'gallery', to: 'images#gallery'
     get 'main-page-images', to: 'images#main_page'
 
     # Auth

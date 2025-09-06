@@ -8,6 +8,30 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Erbos Draco 1st NBP';
+  src: url('../assets/fonts/ERBOSDRACO1STNBPREGULAR-99V5.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Erbos Draco 1st Open NBP';
+  src: url('../assets/fonts/ERBOSDRACO1STOPENNBPREGULAR-L5WX.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LibreBarcode128';
+  src: url('../assets/fonts/LibreBarcode128-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 // CSS class for Beyond Home text
 .beyond-home-text {
   font-family: 'Andvari', serif;

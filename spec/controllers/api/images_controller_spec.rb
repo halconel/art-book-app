@@ -22,7 +22,7 @@ RSpec.describe 'Api::Images', type: :request do
       get '/api/images', headers: { 'Accept' => 'application/json' }
       expect(response).to have_http_status(:ok)
 
-      json_response = JSON.parse(response.body)
+      json_response = response.parsed_body
       expect(json_response).to be_a(Hash)
       expect(json_response[image.id.to_s]).to be_present
       expect(json_response[image.id.to_s]['id']).to eq(image.id)
@@ -32,7 +32,7 @@ RSpec.describe 'Api::Images', type: :request do
       get '/api/images', params: { project_id: project.id }, headers: { 'Accept' => 'application/json' }
       expect(response).to have_http_status(:ok)
 
-      json_response = JSON.parse(response.body)
+      json_response = response.parsed_body
       expect(json_response).to be_a(Hash)
       expect(json_response[image.id.to_s]).to be_present
       expect(json_response[image.id.to_s]['project_id']).to eq(project.id)
@@ -44,7 +44,7 @@ RSpec.describe 'Api::Images', type: :request do
       get "/api/images/#{image.id}", headers: { 'Accept' => 'application/json' }
       expect(response).to have_http_status(:ok)
 
-      json_response = JSON.parse(response.body)
+      json_response = response.parsed_body
       expect(json_response['id']).to eq(image.id)
       expect(json_response['img_url']).to eq(image.img_url)
       expect(json_response['caption']).to eq(image.caption)
@@ -65,7 +65,7 @@ RSpec.describe 'Api::Images', type: :request do
       get '/api/main-page-images', headers: { 'Accept' => 'application/json' }
       expect(response).to have_http_status(:ok)
 
-      json_response = JSON.parse(response.body)
+      json_response = response.parsed_body
       expect(json_response).to be_a(Hash)
       expect(json_response[main_page_image.id.to_s]).to be_present
       expect(json_response[main_page_image.id.to_s]['project_id']).to eq(beyond_home_project.id)
@@ -85,7 +85,7 @@ RSpec.describe 'Api::Images', type: :request do
       patch "/api/images/#{image.id}", params: update_params, headers: { 'Accept' => 'application/json' }
       expect(response).to have_http_status(:ok)
 
-      json_response = JSON.parse(response.body)
+      json_response = response.parsed_body
       expect(json_response['caption']).to eq('Updated Caption')
     end
   end

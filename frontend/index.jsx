@@ -6,6 +6,7 @@ import configureStore from './store/store';
 // Импорт всех стилей приложения
 import './styles/app.scss';
 
+
 document.addEventListener('DOMContentLoaded', () => {
   let store;
   if (window.currentUser) {

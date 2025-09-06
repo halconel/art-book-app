@@ -1,0 +1,235 @@
+// Metadata Overlay Styles
+.metadata-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  pointer-events: none;
+  font-family: 'Erbos Draco 1st Open NBP', monospace;
+  color: white;
+
+  .top-bottom-gradient-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 40.38%, rgba(255, 255, 255, 0) 100%);
+    mix-blend-mode: multiply;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .metadata-blocks {
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 40px;
+    
+    .metadata-blocks-left {
+      display: flex;
+      gap: 108px;
+      align-items: flex-start;
+      flex-direction: row;
+    }
+    
+    .metadata-block {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      
+      .metadata-label {
+        font-family: 'Erbos Draco 1st Open NBP', monospace;
+        font-size: 14px;
+        font-weight: normal;
+        color: #ffffff;
+        margin-bottom: 2px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      }
+      
+      .metadata-value {
+        font-family: 'Erbos Draco 1st Open NBP', monospace;
+        font-size: 14px;
+        color: #ffffff;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    .art-title-block {
+      .art-title {
+        display: flex;
+        gap: 2px;
+        align-items: flex-start;
+        
+        .art-title-column-1 {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          
+          .barcode-wrapper {
+            height: 16px;
+            overflow: hidden;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: flex-start;
+            padding-top: 6px;
+            width: fit-content;
+          }
+          
+          .barcode-text {
+            font-family: 'LibreBarcode128', monospace;
+            font-size: 48px;
+            line-height: 1;
+            color: white;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+            white-space: nowrap;
+            transform-origin: right;
+          }
+          
+          .artwork-title {
+            font-family: 'Erbos Draco 1st Open NBP', monospace;
+            font-size: 14px;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+            text-align: right;
+          }
+        }
+        
+        .art-title-column-2 {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding-top: 6px;
+          
+          .squares-svg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            
+            img, svg {
+              width: 45px;
+              height: 45px;
+              filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Artist branding styles
+.artist-branding {
+  position: absolute;
+  bottom: 60px;
+  left: 40px;
+  right: 40px;
+  z-index: 15;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  
+  .artist-info {
+    .artist-name {
+      font-size: 48px;
+      font-weight: 900;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      font-family: 'Arial', sans-serif;
+    }
+    
+    .artist-subtitle {
+      font-size: 16px;
+      margin: 5px 0 10px 0;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+      font-family: 'Erbos Draco 1st Open NBP', monospace;
+    }
+    
+    .artist-tagline {
+      font-size: 14px;
+      margin: 0;
+      font-style: italic;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+      font-family: 'Erbos Draco 1st Open NBP', monospace;
+    }
+  }
+
+  .slideshow-controls-container {
+    display: flex;
+    align-items: center;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .metadata-overlay {
+    .metadata-top-left,
+    .metadata-top-right {
+      top: 20px;
+      font-size: 10px;
+    }
+    
+    .metadata-top-left {
+      left: 20px;
+    }
+    
+    .metadata-top-right {
+      right: 20px;
+    }
+    
+    .metadata-top-center {
+      top: 20px;
+      
+      .barcode-component {
+        padding: 8px 15px;
+        
+        .artwork-title {
+          font-size: 12px;
+        }
+        
+        .barcode-cross {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+  
+  .artist-branding {
+    bottom: 40px;
+    left: 20px;
+    right: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    
+    .slideshow-controls-container {
+      align-self: center;
+    }
+    
+    .artist-info {
+      .artist-name {
+        font-size: 32px;
+      }
+      
+      .artist-subtitle {
+        font-size: 14px;
+      }
+      
+      .artist-tagline {
+        font-size: 12px;
+      }
+    }
+  }
+}
