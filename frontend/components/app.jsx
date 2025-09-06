@@ -16,6 +16,10 @@ import AdminLayout from './layouts/AdminLayout';
 import ClientLayout from './layouts/ClientLayout';
 import AdminDashboard from './admin/AdminDashboard';
 import ClientDashboard from './client/ClientDashboard';
+import ClientManagement from './admin/ClientManagement';
+import OrdersKanban from './admin/OrdersKanban';
+import WorkloadCalendar from './admin/WorkloadCalendar';
+import ProjectManagement from './admin/ProjectManagement';
 
 const theme = createTheme({
   palette: {
@@ -86,26 +90,14 @@ const App = () => {
             }
           >
             <Route index element={<AdminDashboard />} />
-            <Route
-              path="clients"
-              element={<div>Admin Clients (Coming Soon)</div>}
-            />
-            <Route
-              path="orders"
-              element={<div>Admin Orders (Coming Soon)</div>}
-            />
-            <Route
-              path="projects"
-              element={<div>Admin Projects (Coming Soon)</div>}
-            />
+            <Route path="clients" element={<ClientManagement />} />
+            <Route path="orders" element={<OrdersKanban />} />
+            <Route path="projects" element={<ProjectManagement />} />
             <Route
               path="images"
               element={<div>Admin Images (Coming Soon)</div>}
             />
-            <Route
-              path="calendar"
-              element={<div>Admin Calendar (Coming Soon)</div>}
-            />
+            <Route path="calendar" element={<WorkloadCalendar />} />
             <Route
               path="notifications"
               element={<div>Admin Notifications (Coming Soon)</div>}

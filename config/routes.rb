@@ -46,6 +46,15 @@ Rails.application.routes.draw do
           patch :toggle_main_page
         end
       end
+      
+      resources :cycle_packs, only: [:index, :show, :update] do
+        member do
+          patch :start
+          patch :complete
+        end
+      end
+      
+      resources :workload_calendar, only: [:index, :create, :update, :destroy]
     end
 
     # Client routes
