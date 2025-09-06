@@ -27,6 +27,8 @@ import {
   Notifications,
   AccountCircle,
   Logout,
+  Description,
+  History,
 } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -46,7 +48,9 @@ const AdminLayout = () => {
     { text: 'Orders', icon: <Work />, path: '/admin/orders' },
     { text: 'Projects', icon: <Assignment />, path: '/admin/projects' },
     { text: 'Images', icon: <Image />, path: '/admin/images' },
+    { text: 'Resume', icon: <Description />, path: '/admin/resume' },
     { text: 'Calendar', icon: <CalendarToday />, path: '/admin/calendar' },
+    { text: 'Activity Logs', icon: <History />, path: '/admin/logs' },
     {
       text: 'Notifications',
       icon: <Notifications />,

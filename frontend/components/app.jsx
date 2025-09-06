@@ -24,6 +24,11 @@ import OrderDetail from './client/OrderDetail';
 import ArtistWorkloadCalendar from './client/ArtistWorkloadCalendar';
 import Notifications from './client/Notifications';
 import ClientProfile from './client/ClientProfile';
+import ImageManagement from './admin/ImageManagement';
+import ResumeEditor from './admin/ResumeEditor';
+import AdminLogs from './admin/AdminLogs';
+import PublicGallery from './public/PublicGallery';
+import ArtistInfo from './public/ArtistInfo';
 
 const theme = createTheme({
   palette: {
@@ -81,6 +86,10 @@ const App = () => {
             }
           />
 
+          {/* Public Pages */}
+          <Route path="/public-gallery" element={<PublicGallery />} />
+          <Route path="/artist" element={<ArtistInfo />} />
+
           {/* Authentication */}
           <Route path="/login" element={<LoginForm />} />
 
@@ -97,11 +106,10 @@ const App = () => {
             <Route path="clients" element={<ClientManagement />} />
             <Route path="orders" element={<OrdersKanban />} />
             <Route path="projects" element={<ProjectManagement />} />
-            <Route
-              path="images"
-              element={<div>Admin Images (Coming Soon)</div>}
-            />
+            <Route path="images" element={<ImageManagement />} />
+            <Route path="resume" element={<ResumeEditor />} />
             <Route path="calendar" element={<WorkloadCalendar />} />
+            <Route path="logs" element={<AdminLogs />} />
             <Route
               path="notifications"
               element={<div>Admin Notifications (Coming Soon)</div>}

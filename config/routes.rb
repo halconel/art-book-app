@@ -26,6 +26,14 @@ Rails.application.routes.draw do
     # Images
     resources :images, only: [:index, :show, :update]
 
+    # Public Gallery
+    resources :gallery, only: [:index, :show], controller: 'gallery'
+    
+    # Artist Info (public)
+    get 'artist/info', to: 'artist#info'
+    get 'artist/resume', to: 'artist#resume'
+    get 'artist/stats', to: 'artist#stats'
+
     # Admin routes
     namespace :admin do
       resources :users, only: [:index, :show, :create, :update, :destroy]
@@ -55,6 +63,10 @@ Rails.application.routes.draw do
       end
       
       resources :workload_calendar, only: [:index, :create, :update, :destroy]
+      
+      resource :resume, only: [:show, :update]
+      
+      resources :logs, only: [:index, :show]
     end
 
     # Client routes
