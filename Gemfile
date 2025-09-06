@@ -102,3 +102,6 @@ gem 'jwt'
 
 # CORS для API
 gem 'rack-cors'
+
+# Шифрование данных
+gem 'attr_encrypted'

@@ -35,3 +35,4 @@ node .claude/commands/screenshot.js
 bundle exec rubocop -A
 - Используй линтер для проверки кода javascript
 npm run lint:fix
+- Пользовательские истории должны быть покрыты feture тестами

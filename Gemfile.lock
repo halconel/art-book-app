@@ -84,6 +84,8 @@ GEM
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
     ast (2.4.3)
+    attr_encrypted (4.2.0)
+      encryptor (~> 3.0.0)
     base64 (0.3.0)
     bcrypt (3.1.20)
     benchmark (0.4.1)
@@ -126,6 +128,7 @@ GEM
     diff-lcs (1.6.2)
     docile (1.4.1)
     drb (2.2.3)
+    encryptor (3.0.0)
     erb (5.0.2)
     erubi (1.13.1)
     execjs (2.10.0)
@@ -430,6 +433,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  attr_encrypted
   bcrypt (~> 3.1.18)
   better_errors
   binding_of_caller
