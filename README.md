@@ -106,7 +106,7 @@ ArtBook is a portfolio showcase web application. It is a full-stack app built us
 
 1. **Клонирование репозитория**
    ```bash
-   git clone https://github.com/your-username/art-book-app.git
+   git clone https://github.com/halconel/art-book-app.git
    cd art-book-app
    ```
 
