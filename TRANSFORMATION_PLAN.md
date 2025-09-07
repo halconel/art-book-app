@@ -123,7 +123,8 @@ git push
 
 ### Документация
 
-- [ADMIN.md](https://github.com/halconel/art-book-app/blob/master/.claude/ADMIN.md#пользовательские-истории) - Пользовательские истории
+- [ADMIN.md](https://github.com/halconel/art-book-app/blob/master/.claude/ADMIN.md#пользовательские-истории) - Пользовательские истории: администратор, заказчик
+- [HOME.md](https://github.com/halconel/art-book-app/blob/master/.claude/HOME.md#пользовательские-истории) - Пользовательские истории: гость
 - [README.md](./README.md) - как настроить окружение и начать контибутить
 
 Дополнительно смотри каталог ./docs
