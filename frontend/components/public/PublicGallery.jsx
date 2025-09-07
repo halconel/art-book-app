@@ -18,7 +18,7 @@ import {
   Menu,
   MenuItem,
   CircularProgress,
-  Fade
+  Fade,
 } from '@mui/material';
 import {
   Close,
@@ -29,7 +29,7 @@ import {
   Fullscreen,
   Share,
   Favorite,
-  FavoriteBorder
+  FavoriteBorder,
 } from '@mui/icons-material';
 import api from '../../services/authService';
 
@@ -55,10 +55,10 @@ const PublicGallery = () => {
       setLoading(true);
       // Use public API endpoint that doesn't require authentication
       const response = await api.get('/gallery/images');
-      
+
       const galleryImages = response.data.images || [];
       setImages(galleryImages);
-      
+
       // Extract all unique tags
       const tags = new Set();
       galleryImages.forEach(image => {
@@ -67,7 +67,7 @@ const PublicGallery = () => {
         }
       });
       setAllTags(Array.from(tags).sort());
-      
+
       setError('');
     } catch (err) {
       setError('Failed to load gallery');
@@ -92,12 +92,15 @@ const PublicGallery = () => {
 
   const handlePrevImage = () => {
     const filteredImages = getFilteredImages();
-    const prevIndex = currentImageIndex === 0 ? filteredImages.length - 1 : currentImageIndex - 1;
+    const prevIndex =
+      currentImageIndex === 0
+        ? filteredImages.length - 1
+        : currentImageIndex - 1;
     setCurrentImageIndex(prevIndex);
     setSelectedImage(filteredImages[prevIndex]);
   };
 
-  const handleToggleFavorite = (imageId) => {
+  const handleToggleFavorite = imageId => {
     const newFavorites = new Set(favorites);
     if (newFavorites.has(imageId)) {
       newFavorites.delete(imageId);
@@ -105,12 +108,15 @@ const PublicGallery = () => {
       newFavorites.add(imageId);
     }
     setFavorites(newFavorites);
-    
+
     // Store in localStorage for persistence
-    localStorage.setItem('gallery_favorites', JSON.stringify(Array.from(newFavorites)));
+    localStorage.setItem(
+      'gallery_favorites',
+      JSON.stringify(Array.from(newFavorites))
+    );
   };
 
-  const handleShareImage = async (image) => {
+  const handleShareImage = async image => {
     const shareData = {
       title: image.title || 'Artwork',
       text: image.description || 'Check out this amazing artwork!',
@@ -135,18 +141,19 @@ const PublicGallery = () => {
 
     // Apply search filter
     if (searchTerm) {
-      filtered = filtered.filter(image =>
-        image.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        image.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        image.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      filtered = filtered.filter(
+        image =>
+          image.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          image.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          image.tags?.some(tag =>
+            tag.toLowerCase().includes(searchTerm.toLowerCase())
+          )
       );
     }
 
     // Apply tag filter
     if (tagFilter !== 'all') {
-      filtered = filtered.filter(image => 
-        image.tags?.includes(tagFilter)
-      );
+      filtered = filtered.filter(image => image.tags?.includes(tagFilter));
     }
 
     return filtered;
@@ -164,7 +171,12 @@ const PublicGallery = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="400px"
+      >
         <CircularProgress size={60} />
       </Box>
     );
@@ -177,27 +189,38 @@ const PublicGallery = () => {
         <Typography variant="h2" component="h1" gutterBottom>
           Art Gallery
         </Typography>
-        <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
-          Explore my collection of digital artwork, from character designs to environmental concepts.
+        <Typography
+          variant="h6"
+          color="text.secondary"
+          sx={{ maxWidth: 600, mx: 'auto' }}
+        >
+          Explore my collection of digital artwork, from character designs to
+          environmental concepts.
         </Typography>
       </Box>
 
       {/* Search and Filters */}
-      <Box display="flex" justifyContent="center" gap={2} mb={4} flexWrap="wrap">
+      <Box
+        display="flex"
+        justifyContent="center"
+        gap={2}
+        mb={4}
+        flexWrap="wrap"
+      >
         <TextField
           size="small"
           placeholder="Search artwork..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
           InputProps={{
-            startAdornment: <Search sx={{ mr: 1 }} />
+            startAdornment: <Search sx={{ mr: 1 }} />,
           }}
           sx={{ minWidth: 250 }}
         />
-        
+
         <Button
           startIcon={<FilterList />}
-          onClick={(e) => setFilterAnchorEl(e.currentTarget)}
+          onClick={e => setFilterAnchorEl(e.currentTarget)}
           variant="outlined"
         >
           Tags: {tagFilter === 'all' ? 'All' : tagFilter}
@@ -214,7 +237,7 @@ const PublicGallery = () => {
             Artworks
           </Typography>
         </Box>
-        
+
         <Box textAlign="center">
           <Typography variant="h4" color="secondary">
             {allTags.length}
@@ -223,7 +246,7 @@ const PublicGallery = () => {
             Categories
           </Typography>
         </Box>
-        
+
         <Box textAlign="center">
           <Typography variant="h4" color="success.main">
             {favorites.size}
@@ -240,12 +263,12 @@ const PublicGallery = () => {
           {filteredImages.map((image, index) => (
             <Fade in={true} timeout={300 + index * 50} key={image.id}>
               <ImageListItem
-                sx={{ 
+                sx={{
                   cursor: 'pointer',
                   '&:hover': {
                     '& img': { transform: 'scale(1.05)' },
-                    '& .overlay': { opacity: 1 }
-                  }
+                    '& .overlay': { opacity: 1 },
+                  },
                 }}
                 onClick={() => handleImageClick(image, index)}
               >
@@ -258,7 +281,7 @@ const PublicGallery = () => {
                     borderRadius: 8,
                   }}
                 />
-                
+
                 {/* Overlay */}
                 <Box
                   className="overlay"
@@ -274,35 +297,39 @@ const PublicGallery = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderRadius: 2
+                    borderRadius: 2,
                   }}
                 >
                   <Fullscreen sx={{ color: 'white', fontSize: 40 }} />
                 </Box>
-                
+
                 <ImageListItemBar
                   title={image.title}
                   subtitle={
                     <Box>
                       {image.description && (
-                        <Typography variant="caption" display="block" sx={{ mb: 0.5 }}>
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          sx={{ mb: 0.5 }}
+                        >
                           {image.description.substring(0, 100)}...
                         </Typography>
                       )}
                       <Box display="flex" gap={0.5} flexWrap="wrap">
-                        {image.tags?.slice(0, 3).map((tag) => (
-                          <Chip 
-                            key={tag} 
-                            label={tag} 
-                            size="small" 
+                        {image.tags?.slice(0, 3).map(tag => (
+                          <Chip
+                            key={tag}
+                            label={tag}
+                            size="small"
                             variant="outlined"
                             sx={{ fontSize: '0.7rem' }}
                           />
                         ))}
                         {image.tags?.length > 3 && (
-                          <Chip 
-                            label={`+${image.tags.length - 3}`} 
-                            size="small" 
+                          <Chip
+                            label={`+${image.tags.length - 3}`}
+                            size="small"
                             variant="outlined"
                             sx={{ fontSize: '0.7rem' }}
                           />
@@ -313,7 +340,7 @@ const PublicGallery = () => {
                   actionIcon={
                     <IconButton
                       sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         handleToggleFavorite(image.id);
                       }}
@@ -336,10 +363,9 @@ const PublicGallery = () => {
             No artworks found
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {searchTerm || tagFilter !== 'all' 
+            {searchTerm || tagFilter !== 'all'
               ? 'Try adjusting your search or filter criteria'
-              : 'The gallery is currently empty'
-            }
+              : 'The gallery is currently empty'}
           </Typography>
         </Box>
       )}
@@ -350,7 +376,7 @@ const PublicGallery = () => {
         open={Boolean(filterAnchorEl)}
         onClose={() => setFilterAnchorEl(null)}
       >
-        <MenuItem 
+        <MenuItem
           onClick={() => {
             setTagFilter('all');
             setFilterAnchorEl(null);
@@ -358,7 +384,7 @@ const PublicGallery = () => {
         >
           All Tags
         </MenuItem>
-        {allTags.map((tag) => (
+        {allTags.map(tag => (
           <MenuItem
             key={tag}
             onClick={() => {
@@ -381,8 +407,8 @@ const PublicGallery = () => {
           '& .MuiDialog-paper': {
             backgroundColor: 'transparent',
             boxShadow: 'none',
-            overflow: 'hidden'
-          }
+            overflow: 'hidden',
+          },
         }}
       >
         <DialogContent sx={{ p: 0, position: 'relative' }}>
@@ -398,13 +424,13 @@ const PublicGallery = () => {
                   backgroundColor: 'rgba(0,0,0,0.5)',
                   color: 'white',
                   zIndex: 1,
-                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' }
+                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' },
                 }}
                 onClick={handlePrevImage}
               >
                 <ChevronLeft />
               </IconButton>
-              
+
               <IconButton
                 sx={{
                   position: 'absolute',
@@ -414,7 +440,7 @@ const PublicGallery = () => {
                   backgroundColor: 'rgba(0,0,0,0.5)',
                   color: 'white',
                   zIndex: 1,
-                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' }
+                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' },
                 }}
                 onClick={handleNextImage}
               >
@@ -430,7 +456,7 @@ const PublicGallery = () => {
                   backgroundColor: 'rgba(0,0,0,0.5)',
                   color: 'white',
                   zIndex: 1,
-                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' }
+                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' },
                 }}
                 onClick={() => setOpenLightbox(false)}
               >
@@ -446,7 +472,7 @@ const PublicGallery = () => {
                   height: 'auto',
                   maxHeight: '80vh',
                   objectFit: 'contain',
-                  display: 'block'
+                  display: 'block',
                 }}
               />
 
@@ -458,33 +484,40 @@ const PublicGallery = () => {
                   left: 16,
                   right: 16,
                   backgroundColor: 'rgba(0,0,0,0.8)',
-                  color: 'white'
+                  color: 'white',
                 }}
               >
                 <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="flex-start">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                  >
                     <Box>
                       <Typography variant="h6" gutterBottom>
                         {selectedImage.title}
                       </Typography>
                       {selectedImage.description && (
-                        <Typography variant="body2" sx={{ mb: 1, opacity: 0.9 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{ mb: 1, opacity: 0.9 }}
+                        >
                           {selectedImage.description}
                         </Typography>
                       )}
                       <Box display="flex" gap={1} flexWrap="wrap">
-                        {selectedImage.tags?.map((tag) => (
-                          <Chip 
-                            key={tag} 
-                            label={tag} 
-                            size="small" 
+                        {selectedImage.tags?.map(tag => (
+                          <Chip
+                            key={tag}
+                            label={tag}
+                            size="small"
                             variant="outlined"
                             sx={{ color: 'white', borderColor: 'white' }}
                           />
                         ))}
                       </Box>
                     </Box>
-                    
+
                     <Box display="flex" gap={1}>
                       <IconButton
                         sx={{ color: 'white' }}
@@ -496,7 +529,7 @@ const PublicGallery = () => {
                           <FavoriteBorder />
                         )}
                       </IconButton>
-                      
+
                       <IconButton
                         sx={{ color: 'white' }}
                         onClick={() => handleShareImage(selectedImage)}
@@ -518,7 +551,7 @@ const PublicGallery = () => {
                   color: 'white',
                   px: 2,
                   py: 1,
-                  borderRadius: 1
+                  borderRadius: 1,
                 }}
               >
                 <Typography variant="body2">

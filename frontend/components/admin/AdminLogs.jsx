@@ -31,7 +31,6 @@ import {
   Search,
   Refresh,
   Info,
-  Warning,
   Error as ErrorIcon,
   CheckCircle,
   Person,
@@ -51,7 +50,6 @@ const AdminLogs = () => {
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [totalCount, setTotalCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterAnchorEl, setFilterAnchorEl] = useState(null);
   const [actionFilter, setActionFilter] = useState('all');
   const [userFilter, setUserFilter] = useState('all');
   const [timeFilter, setTimeFilter] = useState('all');
@@ -82,7 +80,7 @@ const AdminLogs = () => {
       setError('');
     } catch (err) {
       setError('Failed to fetch admin logs');
-      console.error('Failed to fetch logs:', err);
+      // console.error('Failed to fetch logs:', err);
     } finally {
       setLoading(false);
     }
@@ -292,7 +290,7 @@ const AdminLogs = () => {
               <Button
                 size="small"
                 startIcon={<FilterList />}
-                onClick={e => setFilterAnchorEl(e.currentTarget)}
+                disabled
               >
                 More Filters
               </Button>

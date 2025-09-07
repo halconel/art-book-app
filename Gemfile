@@ -58,6 +58,7 @@ group :development, :test do
   gem 'simplecov', require: false
 
   # Тестирование
+  gem 'database_cleaner-active_record'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec_junit_formatter'

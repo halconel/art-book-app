@@ -1,0 +1,182 @@
+# Production Deployment Configuration for Art Book App
+# This file contains deployment instructions and requirements
+
+version: '1.0'
+
+environment:
+  name: production
+  ruby_version: "3.4.1"
+  rails_version: "7.1"
+  node_version: "18.x"
+
+# Prerequisites
+prerequisites:
+  - PostgreSQL 13+
+  - Redis (for background jobs)
+  - ImageMagick (for image processing)
+  - Node.js 18+ with npm
+  - Ruby 3.4.1 with bundler
+
+# Environment Variables Required
+environment_variables:
+  required:
+    - DATABASE_URL
+    - REDIS_URL
+    - SECRET_KEY_BASE
+    - RAILS_ENV=production
+    - NODE_ENV=production
+  optional:
+    - MAILER_HOST
+    - MAILER_USERNAME
+    - MAILER_PASSWORD
+    - S3_BUCKET_NAME
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+
+# Build Steps
+build_steps:
+  1_install_dependencies:
+    - "bundle install --without development test"
+    - "npm ci --only=production"
+  
+  2_precompile_assets:
+    - "NODE_ENV=production npm run build"
+    - "bundle exec rails assets:precompile"
+  
+  3_migrate_database:
+    - "bundle exec rails db:migrate"
+  
+  4_optimize_images:
+    - "node .claude/commands/optimize-images.js"
+
+# Server Configuration
+server:
+  recommended_specs:
+    cpu: "2+ cores"
+    memory: "4GB+ RAM"
+    storage: "20GB+ SSD"
+  
+  nginx_config: |
+    server {
+        listen 80;
+        server_name your-domain.com;
+        root /app/public;
+        
+        # Gzip compression
+        gzip on;
+        gzip_vary on;
+        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;
+        
+        # Static assets caching
+        location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf)$ {
+            expires 1y;
+            add_header Cache-Control "public, immutable";
+        }
+        
+        # WebP support
+        location ~* \.(png|jpe?g)$ {
+            add_header Vary Accept;
+            try_files $uri$webp_suffix $uri =404;
+        }
+        
+        # Rails application
+        try_files $uri @rails;
+        
+        location @rails {
+            proxy_pass http://127.0.0.1:3000;
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+
+# Performance Optimizations Applied
+optimizations:
+  frontend:
+    - "Code splitting with React.lazy()"
+    - "Webpack bundle optimization"
+    - "Image optimization (PNG -> WebP)"
+    - "Lazy loading for images"
+    - "Asset caching with content hashes"
+  
+  backend:
+    - "Database connection pooling"
+    - "Redis caching"
+    - "Gzip compression"
+    - "Asset precompilation"
+
+# Health Checks
+health_checks:
+  - endpoint: "/health"
+    expected_response: 200
+  - database_connection: true
+  - redis_connection: true
+
+# Monitoring
+monitoring:
+  recommended_tools:
+    - "Application monitoring: New Relic, Datadog"
+    - "Error tracking: Sentry, Bugsnag"
+    - "Uptime monitoring: Pingdom, StatusCake"
+  
+  key_metrics:
+    - "Response time < 200ms"
+    - "Memory usage < 80%"
+    - "Database connection pool availability"
+    - "Asset loading times"
+
+# Backup Strategy
+backup:
+  database:
+    frequency: "Daily"
+    retention: "30 days"
+    command: "pg_dump $DATABASE_URL > backup-$(date +%Y%m%d).sql"
+  
+  uploads:
+    frequency: "Daily" 
+    retention: "30 days"
+    location: "S3 bucket or filesystem backup"
+
+# Security Checklist
+security:
+  - "✅ HTTPS enabled"
+  - "✅ Secret keys in environment variables"
+  - "✅ CORS properly configured"
+  - "✅ SQL injection protection (Rails built-in)"
+  - "✅ XSS protection enabled"
+  - "✅ CSRF protection enabled"
+  - "✅ Secure headers configured"
+
+# Deployment Commands
+deploy_commands:
+  # Full deployment
+  full_deploy: |
+    git pull origin main
+    bundle install --without development test
+    npm ci --only=production
+    NODE_ENV=production npm run build
+    bundle exec rails assets:precompile
+    bundle exec rails db:migrate
+    sudo systemctl restart your-app-service
+  
+  # Quick update (no deps changed)
+  quick_deploy: |
+    git pull origin main
+    NODE_ENV=production npm run build
+    bundle exec rails assets:precompile
+    sudo systemctl restart your-app-service
+
+# Rollback Plan
+rollback:
+  steps:
+    - "Checkout previous working commit"
+    - "Restore database from backup if needed"
+    - "Rebuild assets"
+    - "Restart services"
+  
+  command: |
+    git checkout [PREVIOUS_WORKING_COMMIT]
+    NODE_ENV=production npm run build
+    bundle exec rails assets:precompile
+    sudo systemctl restart your-app-service

@@ -18,30 +18,33 @@ if (!fs.existsSync(tmpDir)) {
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  
+
   // Устанавливаем размер экрана
   await page.setViewport({ width: 1920, height: 1080 });
-  
+
   try {
     console.log('🔄 Создание скриншота главной страницы...');
-    
+
     // Переходим на главную страницу
     await page.goto('http://localhost:3001/', { waitUntil: 'networkidle2' });
-    
+
     // Ждем, пока загрузятся изображения
     await new Promise(resolve => setTimeout(resolve, 3000));
-    
+
     // Создаем уникальное имя файла с временной меткой
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+    const timestamp = new Date()
+      .toISOString()
+      .replace(/[:.]/g, '-')
+      .slice(0, -5);
     const filename = `homepage-${timestamp}.png`;
     const filepath = path.join(tmpDir, filename);
-    
+
     // Делаем скриншот
-    await page.screenshot({ 
+    await page.screenshot({
       path: filepath,
-      fullPage: true 
+      fullPage: true,
     });
-    
+
     console.log(`✅ Скриншот сохранен: ${filepath}`);
   } catch (error) {
     console.error('❌ Ошибка при создании скриншота:', error);

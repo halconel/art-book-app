@@ -142,10 +142,10 @@ $container-max-width: 1200px;
         color: #00ff00;
       }
     }
-    
+
     &.active .nav-link {
       color: #00ff00;
-      
+
       .nav-separator .separator-icon {
         color: #00ff00;
       }
@@ -153,7 +153,7 @@ $container-max-width: 1200px;
 
     &:hover .nav-link:not(.active) {
       color: #00ff00;
-      
+
       .nav-separator .separator-icon {
         color: #00ff00;
       }
@@ -161,9 +161,15 @@ $container-max-width: 1200px;
   }
 
   @keyframes pathTransform {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(45deg) scale(1.2); }
-    100% { transform: rotate(90deg) scale(1); }
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+    50% {
+      transform: rotate(45deg) scale(1.2);
+    }
+    100% {
+      transform: rotate(90deg) scale(1);
+    }
   }
 
   // Responsive design for mobile devices

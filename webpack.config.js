@@ -21,9 +21,44 @@ module.exports = {
   entry: './frontend/index.jsx',
   output: {
     path: path.resolve(__dirname, 'app', 'assets', 'javascripts'),
-    filename: 'bundle.js',
+    filename: process.env.NODE_ENV === 'production' ? '[name].[contenthash].js' : 'bundle.js',
+    chunkFilename: process.env.NODE_ENV === 'production' ? '[name].[contenthash].chunk.js' : '[name].chunk.js',
+    clean: true,
   },
   plugins: plugins,
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+          priority: 10,
+        },
+        admin: {
+          test: /[\\/]components[\\/]admin[\\/]/,
+          name: 'admin',
+          chunks: 'all',
+          priority: 5,
+        },
+        client: {
+          test: /[\\/]components[\\/]client[\\/]/,
+          name: 'client',
+          chunks: 'all',
+          priority: 5,
+        },
+        common: {
+          name: 'common',
+          minChunks: 2,
+          chunks: 'all',
+          priority: 1,
+        },
+      },
+    },
+    usedExports: true,
+    sideEffects: false,
+  },
   module: {
     rules: [
       {

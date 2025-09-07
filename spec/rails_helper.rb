@@ -38,7 +38,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   # Include FactoryBot methods
   config.include FactoryBot::Syntax::Methods
@@ -62,32 +62,20 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-
-  # Capybara configuration
-  config.before(:each, type: :feature) do
-    Capybara.current_driver = :selenium_chrome_headless
+  
+  # Load support files
+  Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+  
+  # Load feature helpers
+  Dir[Rails.root.join('spec', 'features', 'shared', '*.rb')].each { |f| require f }
+  
+  # Enable ActiveJob testing
+  config.include ActiveJob::TestHelper
+  
+  # Clean up after each test
+  config.after(:each) do
+    ActionMailer::Base.deliveries.clear
   end
-end
-
-# Capybara settings
-Capybara.register_driver :selenium_chrome_headless do |app|
-  options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument('--headless')
-  options.add_argument('--disable-gpu')
-  options.add_argument('--no-sandbox')
-  options.add_argument('--disable-dev-shm-usage')
-  options.add_argument('--disable-web-security')
-  options.add_argument('--disable-features=VizDisplayCompositor')
-  options.add_argument('--window-size=1400,900')
-
-  # Use Chrome for Testing binary and ChromeDriver
-  options.binary = File.expand_path('~/chrome-for-testing/chrome-linux64/chrome')
-
-  service = Selenium::WebDriver::Service.chrome(
-    path: File.expand_path('~/chrome-for-testing/chromedriver-linux64/chromedriver')
-  )
-
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options, service: service)
 end
 
 Capybara.server_host = 'localhost'

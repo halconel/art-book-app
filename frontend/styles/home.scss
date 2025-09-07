@@ -14,7 +14,8 @@ $home-dark-bg: #0d0d0d;
 
 // Base app styles
 .home-app {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
   line-height: 1.6;
   color: #ffffff;
   background-color: #000000;
@@ -49,11 +50,11 @@ $home-dark-bg: #0d0d0d;
         background-repeat: no-repeat;
         opacity: 0;
         transition: opacity 1s ease-in-out;
-        
+
         &.active {
           opacity: 1;
         }
-        
+
         &.slide-next {
           z-index: 2;
         }
@@ -84,7 +85,7 @@ $home-dark-bg: #0d0d0d;
     padding: 60px 0;
     display: flex;
     align-items: center;
-    
+
     .about-container {
       @include home-container;
       display: grid;
@@ -92,12 +93,12 @@ $home-dark-bg: #0d0d0d;
       gap: 80px;
       align-items: center;
     }
-    
+
     .character-illustration {
       display: flex;
       align-items: center;
       justify-content: center;
-      
+
       .character-image {
         width: 100%;
         max-width: 400px;
@@ -106,19 +107,19 @@ $home-dark-bg: #0d0d0d;
         filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.7));
       }
     }
-    
+
     .info-card {
       background: rgba(255, 255, 255, 0.97);
       border-radius: 12px;
       padding: 45px;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
       margin-left: 20px;
-      
+
       .info-card-header {
         border-bottom: 2px solid #000;
         margin-bottom: 30px;
         padding-bottom: 15px;
-        
+
         h2 {
           font-size: 36px;
           font-weight: 400;
@@ -128,13 +129,13 @@ $home-dark-bg: #0d0d0d;
           line-height: 47px;
         }
       }
-      
+
       .info-fields-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 44px;
         margin-bottom: 25px;
-        
+
         .info-fields-left,
         .info-fields-right {
           display: flex;
@@ -142,13 +143,13 @@ $home-dark-bg: #0d0d0d;
           gap: 25px;
         }
       }
-      
+
       .info-field {
         margin-bottom: 0;
-        
+
         .field-label {
-          background: #1F1F1F;
-          color: #FFFFFF;
+          background: #1f1f1f;
+          color: #ffffff;
           padding: 5px 10px;
           font-weight: 400;
           font-size: 16px;
@@ -163,7 +164,7 @@ $home-dark-bg: #0d0d0d;
           box-sizing: border-box;
           padding-left: 5px;
         }
-        
+
         .field-value {
           font-weight: 400;
           color: #000000;
@@ -172,7 +173,7 @@ $home-dark-bg: #0d0d0d;
           line-height: 26px;
           margin-bottom: 4px;
         }
-        
+
         .field-subtitle {
           font-weight: 400;
           color: #000000;
@@ -181,17 +182,17 @@ $home-dark-bg: #0d0d0d;
           line-height: 24px;
         }
       }
-      
+
       .info-separator {
         width: 548px;
         height: 0px;
         border: 1px solid #000000;
         margin: 25px 0 20px 0;
       }
-      
+
       .info-content {
         margin-top: 20px;
-        
+
         p {
           color: #000000;
           line-height: 29px;
@@ -212,28 +213,28 @@ $home-dark-bg: #0d0d0d;
       height: auto;
       min-height: 70vh;
       padding: 30px 0;
-      
+
       .about-container {
         grid-template-columns: 1fr;
         gap: 40px;
         padding: 0 20px;
       }
-      
+
       .character-illustration {
         .character-image {
           max-width: 300px;
         }
       }
-      
+
       .info-card {
         padding: 30px;
         margin-left: 0;
       }
-      
+
       .info-fields-grid {
         grid-template-columns: 1fr;
         gap: 20px;
-        
+
         .info-fields-left,
         .info-fields-right {
           gap: 20px;

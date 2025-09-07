@@ -8,12 +8,15 @@ module.exports = {
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
   testMatch: [
-    '<rootDir>/frontend/__tests__/**/*.js',
-    '<rootDir>/frontend/__tests__/**/*.jsx',
+    '<rootDir>/frontend/__tests__/**/*.test.js',
+    '<rootDir>/frontend/__tests__/**/*.test.jsx',
   ],
   collectCoverageFrom: [
     'frontend/**/*.{js,jsx}',
     '!frontend/index.jsx',
     '!frontend/__tests__/**',
+  ],
+  transformIgnorePatterns: [
+    'node_modules/(?!(.*\\.mjs$|@mui/.*|recharts/.*|@testing-library/.*))',
   ],
 };

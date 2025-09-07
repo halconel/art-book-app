@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, CircularProgress, Box } from '@mui/material';
 
 import HomeContainer from './home/home_container';
 import GalleryContainer from './gallery/gallery_container';
@@ -14,23 +14,37 @@ import { NotificationProvider } from '../contexts/NotificationContext';
 import { ConfirmationProvider } from '../contexts/ConfirmationContext';
 import LoginForm from './auth/LoginForm';
 import ProtectedRoute from './auth/ProtectedRoute';
-import AdminLayout from './layouts/AdminLayout';
-import ClientLayout from './layouts/ClientLayout';
-import AdminDashboard from './admin/AdminDashboard';
-import ClientDashboard from './client/ClientDashboard';
-import ClientManagement from './admin/ClientManagement';
-import OrdersKanban from './admin/OrdersKanban';
-import WorkloadCalendar from './admin/WorkloadCalendar';
-import ProjectManagement from './admin/ProjectManagement';
-import OrderDetail from './client/OrderDetail';
-import ArtistWorkloadCalendar from './client/ArtistWorkloadCalendar';
-import Notifications from './client/Notifications';
-import ClientProfile from './client/ClientProfile';
-import ImageManagement from './admin/ImageManagement';
-import ResumeEditor from './admin/ResumeEditor';
-import AdminLogs from './admin/AdminLogs';
-import PublicGallery from './public/PublicGallery';
-import ArtistInfo from './public/ArtistInfo';
+
+// Lazy loaded components
+const AdminLayout = React.lazy(() => import('./layouts/AdminLayout'));
+const ClientLayout = React.lazy(() => import('./layouts/ClientLayout'));
+const AdminDashboard = React.lazy(() => import('./admin/AdminDashboard'));
+const ClientDashboard = React.lazy(() => import('./client/ClientDashboard'));
+const ClientManagement = React.lazy(() => import('./admin/ClientManagement'));
+const OrdersKanban = React.lazy(() => import('./admin/OrdersKanban'));
+const WorkloadCalendar = React.lazy(() => import('./admin/WorkloadCalendar'));
+const ProjectManagement = React.lazy(() => import('./admin/ProjectManagement'));
+const OrderDetail = React.lazy(() => import('./client/OrderDetail'));
+const ArtistWorkloadCalendar = React.lazy(() => import('./client/ArtistWorkloadCalendar'));
+const Notifications = React.lazy(() => import('./client/Notifications'));
+const ClientProfile = React.lazy(() => import('./client/ClientProfile'));
+const ImageManagement = React.lazy(() => import('./admin/ImageManagement'));
+const ResumeEditor = React.lazy(() => import('./admin/ResumeEditor'));
+const AdminLogs = React.lazy(() => import('./admin/AdminLogs'));
+const PublicGallery = React.lazy(() => import('./public/PublicGallery'));
+const ArtistInfo = React.lazy(() => import('./public/ArtistInfo'));
+
+// Loading component
+const LoadingSpinner = () => (
+  <Box 
+    display="flex" 
+    justifyContent="center" 
+    alignItems="center" 
+    minHeight="50vh"
+  >
+    <CircularProgress />
+  </Box>
+);
 
 const theme = createTheme({
   palette: {
@@ -148,8 +162,16 @@ const App = () => {
               />
 
               {/* Public Pages */}
-              <Route path="/public-gallery" element={<PublicGallery />} />
-              <Route path="/artist" element={<ArtistInfo />} />
+              <Route path="/public-gallery" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PublicGallery />
+                </Suspense>
+              } />
+              <Route path="/artist" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ArtistInfo />
+                </Suspense>
+              } />
 
               {/* Authentication */}
               <Route path="/login" element={<LoginForm />} />
@@ -159,18 +181,52 @@ const App = () => {
                 path="/admin"
                 element={
                   <ProtectedRoute requireRole="admin">
-                    <AdminLayout />
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <AdminLayout />
+                    </Suspense>
                   </ProtectedRoute>
                 }
               >
-                <Route index element={<AdminDashboard />} />
-                <Route path="clients" element={<ClientManagement />} />
-                <Route path="orders" element={<OrdersKanban />} />
-                <Route path="projects" element={<ProjectManagement />} />
-                <Route path="images" element={<ImageManagement />} />
-                <Route path="resume" element={<ResumeEditor />} />
-                <Route path="calendar" element={<WorkloadCalendar />} />
-                <Route path="logs" element={<AdminLogs />} />
+                <Route index element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <AdminDashboard />
+                  </Suspense>
+                } />
+                <Route path="clients" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ClientManagement />
+                  </Suspense>
+                } />
+                <Route path="orders" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <OrdersKanban />
+                  </Suspense>
+                } />
+                <Route path="projects" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ProjectManagement />
+                  </Suspense>
+                } />
+                <Route path="images" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ImageManagement />
+                  </Suspense>
+                } />
+                <Route path="resume" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ResumeEditor />
+                  </Suspense>
+                } />
+                <Route path="calendar" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <WorkloadCalendar />
+                  </Suspense>
+                } />
+                <Route path="logs" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <AdminLogs />
+                  </Suspense>
+                } />
                 <Route
                   path="notifications"
                   element={<div>Admin Notifications (Coming Soon)</div>}
@@ -182,15 +238,37 @@ const App = () => {
                 path="/client"
                 element={
                   <ProtectedRoute requireRole="client">
-                    <ClientLayout />
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ClientLayout />
+                    </Suspense>
                   </ProtectedRoute>
                 }
               >
-                <Route index element={<ClientDashboard />} />
-                <Route path="orders/:orderId" element={<OrderDetail />} />
-                <Route path="workload" element={<ArtistWorkloadCalendar />} />
-                <Route path="notifications" element={<Notifications />} />
-                <Route path="profile" element={<ClientProfile />} />
+                <Route index element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ClientDashboard />
+                  </Suspense>
+                } />
+                <Route path="orders/:orderId" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <OrderDetail />
+                  </Suspense>
+                } />
+                <Route path="workload" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ArtistWorkloadCalendar />
+                  </Suspense>
+                } />
+                <Route path="notifications" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Notifications />
+                  </Suspense>
+                } />
+                <Route path="profile" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ClientProfile />
+                  </Suspense>
+                } />
               </Route>
 
               <Route path="*" element={<Navigate to="/" replace />} />

@@ -25,7 +25,11 @@
     left: 0;
     right: 0;
     height: 200px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
     mix-blend-mode: multiply;
     opacity: 0.7;
     pointer-events: none;
@@ -34,7 +38,7 @@
 
   &__logo {
     align-self: center;
-    
+
     &-icon {
       height: 110px;
       filter: invert(1); // Make logo white
@@ -46,7 +50,7 @@
   }
 
   &__name {
-    font-size: 3.0rem;
+    font-size: 3rem;
     font-weight: 300;
     font-family: 'Andvari';
     letter-spacing: 0.1em;
@@ -74,7 +78,7 @@
     width: 212px;
     justify-content: center;
   }
-  
+
   &__tagline {
     font-size: 1.1rem;
     font-weight: 300;

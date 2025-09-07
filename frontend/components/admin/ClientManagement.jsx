@@ -233,13 +233,14 @@ const ClientManagement = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {loading ? (
+              {loading && (
                 <TableRow>
                   <TableCell colSpan={5} align="center">
                     <CircularProgress size={24} />
                   </TableCell>
                 </TableRow>
-              ) : clients.length === 0 ? (
+              )}
+              {!loading && clients.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5} align="center">
                     <Typography color="textSecondary">
@@ -247,7 +248,9 @@ const ClientManagement = () => {
                     </Typography>
                   </TableCell>
                 </TableRow>
-              ) : (
+              )}
+              {!loading &&
+                clients.length > 0 &&
                 clients.map(client => (
                   <TableRow key={client.id} hover>
                     <TableCell>
@@ -295,8 +298,7 @@ const ClientManagement = () => {
                       </Tooltip>
                     </TableCell>
                   </TableRow>
-                ))
-              )}
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
