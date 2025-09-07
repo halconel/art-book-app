@@ -1,2 +1,3 @@
 // Manifest file for webpack assets
-//= link bundle.js
+//= link vendors.bundle.js
+//= link main.bundle.js

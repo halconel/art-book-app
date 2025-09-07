@@ -62,18 +62,18 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-  
+
   # Load support files
-  Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
-  
+  Rails.root.glob('spec/support/**/*.rb').each { |f| require f }
+
   # Load feature helpers
-  Dir[Rails.root.join('spec', 'features', 'shared', '*.rb')].each { |f| require f }
-  
+  Rails.root.glob('spec/features/shared/*.rb').each { |f| require f }
+
   # Enable ActiveJob testing
   config.include ActiveJob::TestHelper
-  
+
   # Clean up after each test
-  config.after(:each) do
+  config.after do
     ActionMailer::Base.deliveries.clear
   end
 end

@@ -17,7 +17,7 @@ Capybara.register_driver :chrome_headless do |app|
   # Use Chrome for Testing if available
   chrome_path = File.expand_path('~/chrome-for-testing/chrome-linux64/chrome')
   chromedriver_path = File.expand_path('~/chrome-for-testing/chromedriver-linux64/chromedriver')
-  
+
   if File.exist?(chrome_path) && File.exist?(chromedriver_path)
     options.binary = chrome_path
     service = Selenium::WebDriver::Service.chrome(path: chromedriver_path)
@@ -37,7 +37,7 @@ Capybara.register_driver :chrome do |app|
   # Use Chrome for Testing if available
   chrome_path = File.expand_path('~/chrome-for-testing/chrome-linux64/chrome')
   chromedriver_path = File.expand_path('~/chrome-for-testing/chromedriver-linux64/chromedriver')
-  
+
   if File.exist?(chrome_path) && File.exist?(chromedriver_path)
     options.binary = chrome_path
     service = Selenium::WebDriver::Service.chrome(path: chromedriver_path)

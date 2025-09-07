@@ -1,49 +1,57 @@
-class Api::GalleryController < ApplicationController
-  # Public endpoint - no authentication required
-  skip_before_action :authenticate_user!, only: [:index, :show]
+# frozen_string_literal: true
 
-  def index
-    images = Image.visible
-                 .featured_first
-                 .includes(:project)
-                 .limit(100)
+module Api
+  class GalleryController < ApplicationController
+    # Public endpoint - no authentication required
+    skip_before_action :authenticate_user!, only: %i[index show]
 
-    render json: {
-      images: images.map { |image| format_public_image(image) }
-    }
-  end
+    def index
+      images = Image.visible
+                    .featured_first
+                    .includes(:project)
+                    .limit(100)
 
-  def show
-    image = Image.visible.find(params[:id])
-    render json: {
-      image: format_public_image(image, include_details: true)
-    }
-  end
+      render json: {
+        images: images.map { |image| format_public_image(image) }
+      }
+    end
 
-  private
+    def show
+      image = Image.visible.find(params[:id])
+      render json: {
+        image: format_public_image(image, include_details: true)
+      }
+    end
 
-  def format_public_image(image, include_details: false)
-    {
-      id: image.id,
-      title: image.title,
-      description: image.description,
-      url: image.url,
-      thumbnail_url: image.thumbnail_url,
-      alt_text: image.alt_text,
-      tags: image.tags || [],
-      is_featured: image.is_featured,
-      created_at: image.created_at,
-      project: image.project ? {
-        id: image.project.id,
-        title: image.project.title
-      } : nil
-    }.tap do |result|
-      if include_details
-        result[:metadata] = image.metadata
-        result[:dimensions] = {
-          width: image.width,
-          height: image.height
-        } if image.width && image.height
+    private
+
+    def format_public_image(image, include_details: false)
+      {
+        id: image.id,
+        title: image.title,
+        description: image.description,
+        url: image.url,
+        thumbnail_url: image.thumbnail_url,
+        alt_text: image.alt_text,
+        tags: image.tags || [],
+        is_featured: image.is_featured,
+        created_at: image.created_at,
+        project: if image.project
+                   {
+                     id: image.project.id,
+                     title: image.project.title
+                   }
+                 end
+      }.tap do |result|
+        if include_details
+          result[:metadata] = image.metadata
+          if image.width && image.height
+            result[:dimensions] = {
+              width: image.width,
+              height: image.height
+            }
+          end
+        end
       end
     end
   end

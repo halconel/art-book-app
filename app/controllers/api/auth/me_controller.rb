@@ -13,7 +13,7 @@ module Api
             id: current_user.id,
             email: current_user.email,
             role: current_user.role,
-            email_verified: current_user.email_verified_at.present?,
+            email_verified: current_user.verified_at.present?,
             created_at: current_user.created_at
           }
         }

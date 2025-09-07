@@ -58,8 +58,8 @@ module UIHelpers
     expect(page).to have_no_css('.MuiCircularProgress-root', wait: 10)
   end
 
-  def within_modal(&block)
-    within('.MuiDialog-container', &block)
+  def within_modal(&)
+    within('.MuiDialog-container', &)
   end
 
   def close_modal

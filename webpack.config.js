@@ -21,7 +21,7 @@ module.exports = {
   entry: './frontend/index.jsx',
   output: {
     path: path.resolve(__dirname, 'app', 'assets', 'javascripts'),
-    filename: process.env.NODE_ENV === 'production' ? '[name].[contenthash].js' : 'bundle.js',
+    filename: process.env.NODE_ENV === 'production' ? '[name].[contenthash].js' : '[name].bundle.js',
     chunkFilename: process.env.NODE_ENV === 'production' ? '[name].[contenthash].chunk.js' : '[name].chunk.js',
     clean: true,
   },

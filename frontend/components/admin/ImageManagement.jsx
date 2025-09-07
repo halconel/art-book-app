@@ -65,13 +65,13 @@ const ImageManagement = () => {
   const [imageForm, setImageForm] = useState({
     title: '',
     description: '',
-    url: '',
-    thumbnail_url: '',
-    alt_text: '',
-    is_featured: false,
-    is_visible: true,
+    caption: '',
+    img_url: '',
+    show_on_main_page: false,
     project_id: null,
-    tags: '',
+    width: null,
+    height: null,
+    file_size: null,
   });
 
   useEffect(() => {
@@ -96,11 +96,7 @@ const ImageManagement = () => {
       setUploading(true);
 
       const imageData = {
-        ...imageForm,
-        tags: imageForm.tags
-          .split(',')
-          .map(tag => tag.trim())
-          .filter(Boolean),
+        ...imageForm
       };
 
       let response;
@@ -403,8 +399,8 @@ const ImageManagement = () => {
                       }}
                     >
                       <img
-                        src={image.thumbnail_url || image.url}
-                        alt={image.alt_text || image.title}
+                        src={image.img_url}
+                        alt={image.title}
                         loading="lazy"
                         style={{
                           width: '100%',
@@ -741,7 +737,7 @@ const ImageManagement = () => {
                   Preview:
                 </Typography>
                 <img
-                  src={imageForm.thumbnail_url || imageForm.url}
+                  src={imageForm.img_url}
                   alt="Preview"
                   style={{
                     maxWidth: '100%',

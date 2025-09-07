@@ -4,7 +4,7 @@ module AuthenticationHelpers
   def sign_in_as_admin(admin = nil)
     admin ||= create(:user, :admin)
     visit '/login'
-    
+
     within('#login-form') do
       fill_in 'Email', with: admin.email
       fill_in 'Password', with: admin.password
@@ -18,7 +18,7 @@ module AuthenticationHelpers
   def sign_in_as_client(client = nil)
     client ||= create(:user, :client)
     visit '/login'
-    
+
     within('#login-form') do
       fill_in 'Email', with: client.email
       fill_in 'Password', with: client.password

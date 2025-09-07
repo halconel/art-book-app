@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 const API_BASE_URL =
   process.env.NODE_ENV === 'production'
     ? 'https://api.yourdomain.com'
-    : 'http://localhost:3001';
+    : window.location.origin;
 
 const api = axios.create({
   baseURL: `${API_BASE_URL}/api`,
@@ -33,7 +33,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       Cookies.remove('auth_token');
       Cookies.remove('user_role');
-      window.location.href = '/login';
+      window.location.href = '/#/login';
     }
     return Promise.reject(error);
   }
@@ -42,7 +42,8 @@ api.interceptors.response.use(
 export const authService = {
   async login(email, password) {
     const response = await api.post('/auth/login', {
-      user: { email, password },
+      email,
+      password,
     });
 
     const { token, user } = response.data;
@@ -80,7 +81,7 @@ export const authService = {
   logout() {
     Cookies.remove('auth_token');
     Cookies.remove('user_role');
-    window.location.href = '/login';
+    window.location.href = '/#/login';
   },
 
   getToken() {

@@ -54,4 +54,4 @@ Rails.application.configure do
   # config.middleware.insert_after(ActionDispatch::Static, Rack::LiveReload)
 end
 
-Rails.application.config.hosts << '107914c31bfa.ngrok-free.app'
+Rails.application.config.hosts << '3b3d68fc5d70.ngrok-free.app'

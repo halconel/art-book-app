@@ -10,7 +10,7 @@ FactoryBot.define do
 
     trait :completed do
       status { 'completed' }
-      completed_at { Time.current + 14.days }
+      completed_at { 14.days.from_now }
     end
 
     trait :in_progress do
