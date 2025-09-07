@@ -123,15 +123,14 @@ git push
 
 ### Документация
 
-- [LINTING_SETUP.md](./LINTING_SETUP.md) - Настройка линтеров
-- [API_ENDPOINTS.md](./docs/api-endpoints.md) - API документация
-- [DESIGN_SYSTEM.md](./docs/design-system.md) - Дизайн система
+- [ADMIN.md](https://github.com/halconel/art-book-app/blob/master/.claude/ADMIN.md#пользовательские-истории) - Пользовательские истории
+- [README.md](./README.md) - как настроить окружение и начать контибутить
+
+Дополнительно смотри каталог ./docs
 
 ### Референсы
 
 - [aidelank.com](https://aidelank.com/) - Основной референс дизайна
-- [JWT.io](https://jwt.io/) - Документация JWT
-- [Rails 7.1 Guide](https://guides.rubyonrails.org/) - Rails документация
 
 ### Инструменты
 
