@@ -1,19 +1,17 @@
 import React from 'react';
 
-const OptimizedImage = ({ 
-  src, 
-  webpSrc, 
-  alt, 
-  className, 
+const OptimizedImage = ({
+  src,
+  webpSrc,
+  alt,
+  className,
   style,
   loading = 'lazy',
-  ...props 
+  ...props
 }) => {
   return (
     <picture>
-      {webpSrc && (
-        <source srcSet={webpSrc} type="image/webp" />
-      )}
+      {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
       <img
         src={src}
         alt={alt}

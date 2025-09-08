@@ -25,7 +25,9 @@ const OrdersKanban = React.lazy(() => import('./admin/OrdersKanban'));
 const WorkloadCalendar = React.lazy(() => import('./admin/WorkloadCalendar'));
 const ProjectManagement = React.lazy(() => import('./admin/ProjectManagement'));
 const OrderDetail = React.lazy(() => import('./client/OrderDetail'));
-const ArtistWorkloadCalendar = React.lazy(() => import('./client/ArtistWorkloadCalendar'));
+const ArtistWorkloadCalendar = React.lazy(() =>
+  import('./client/ArtistWorkloadCalendar')
+);
 const Notifications = React.lazy(() => import('./client/Notifications'));
 const ClientProfile = React.lazy(() => import('./client/ClientProfile'));
 const ImageManagement = React.lazy(() => import('./admin/ImageManagement'));
@@ -36,10 +38,10 @@ const ArtistInfo = React.lazy(() => import('./public/ArtistInfo'));
 
 // Loading component
 const LoadingSpinner = () => (
-  <Box 
-    display="flex" 
-    justifyContent="center" 
-    alignItems="center" 
+  <Box
+    display="flex"
+    justifyContent="center"
+    alignItems="center"
     minHeight="50vh"
   >
     <CircularProgress />
@@ -162,16 +164,22 @@ const App = () => {
               />
 
               {/* Public Pages */}
-              <Route path="/public-gallery" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <PublicGallery />
-                </Suspense>
-              } />
-              <Route path="/artist" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <ArtistInfo />
-                </Suspense>
-              } />
+              <Route
+                path="/public-gallery"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <PublicGallery />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/artist"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ArtistInfo />
+                  </Suspense>
+                }
+              />
 
               {/* Authentication */}
               <Route path="/login" element={<LoginForm />} />
@@ -187,46 +195,70 @@ const App = () => {
                   </ProtectedRoute>
                 }
               >
-                <Route index element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <AdminDashboard />
-                  </Suspense>
-                } />
-                <Route path="clients" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <ClientManagement />
-                  </Suspense>
-                } />
-                <Route path="orders" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <OrdersKanban />
-                  </Suspense>
-                } />
-                <Route path="projects" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <ProjectManagement />
-                  </Suspense>
-                } />
-                <Route path="images" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <ImageManagement />
-                  </Suspense>
-                } />
-                <Route path="resume" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <ResumeEditor />
-                  </Suspense>
-                } />
-                <Route path="calendar" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <WorkloadCalendar />
-                  </Suspense>
-                } />
-                <Route path="logs" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <AdminLogs />
-                  </Suspense>
-                } />
+                <Route
+                  index
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <AdminDashboard />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="clients"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ClientManagement />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="orders"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <OrdersKanban />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="projects"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ProjectManagement />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="images"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ImageManagement />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="resume"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ResumeEditor />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="calendar"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <WorkloadCalendar />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="logs"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <AdminLogs />
+                    </Suspense>
+                  }
+                />
                 <Route
                   path="notifications"
                   element={<div>Admin Notifications (Coming Soon)</div>}
@@ -244,31 +276,46 @@ const App = () => {
                   </ProtectedRoute>
                 }
               >
-                <Route index element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <ClientDashboard />
-                  </Suspense>
-                } />
-                <Route path="orders/:orderId" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <OrderDetail />
-                  </Suspense>
-                } />
-                <Route path="workload" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <ArtistWorkloadCalendar />
-                  </Suspense>
-                } />
-                <Route path="notifications" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <Notifications />
-                  </Suspense>
-                } />
-                <Route path="profile" element={
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <ClientProfile />
-                  </Suspense>
-                } />
+                <Route
+                  index
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ClientDashboard />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="orders/:orderId"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <OrderDetail />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="workload"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ArtistWorkloadCalendar />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="notifications"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <Notifications />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="profile"
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ClientProfile />
+                    </Suspense>
+                  }
+                />
               </Route>
 
               <Route path="*" element={<Navigate to="/" replace />} />

@@ -15,7 +15,8 @@ module Api
 
         render json: {
           images: images.map { |image| image_response(image) },
-          pagination: pagination_meta(images)
+          pagination: pagination_meta(images),
+          total_count: images.total_count
         }
       end
 

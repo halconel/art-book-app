@@ -17,6 +17,7 @@ module Api
         render json: {
           projects: projects.map { |project| project_response(project) },
           pagination: pagination_meta(projects),
+          total_count: projects.total_count,
           filters: {
             statuses: Project.statuses.keys,
             types: %w[personal client]

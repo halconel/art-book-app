@@ -19,4 +19,32 @@
 ```bash
 node .claude/commands/screenshot.js
 ```
-- При указании номера проблемы (issue) нужно сначала прочитать содержимое проблемы на https://github.com/halconel/art-book-app/issues
+
+## Команды для работы с GitHub Issues
+
+### Просмотр всех проблем/задач
+```bash
+gh issue list --repo halconel/art-book-app
+```
+
+### Просмотр конкретной проблемы/задачи
+```bash
+gh issue view [номер] --repo halconel/art-book-app
+```
+
+### Создание новой проблемы/задачи
+```bash
+gh issue create --repo halconel/art-book-app --title "[заголовок]" --body "[описание]" --label "[метка]"
+```
+
+### Редактирование существующей проблемы/задачи
+```bash
+gh issue edit [номер] --repo halconel/art-book-app --title "[новый заголовок]" --body "[новое описание]"
+```
+
+### Закрытие проблемы/задачи
+```bash
+gh issue close [номер] --repo halconel/art-book-app
+```
+
+- При указании номера проблемы/задачи (issue) нужно сначала прочитать содержимое проблемы используя команду выше

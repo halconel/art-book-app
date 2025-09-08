@@ -5,13 +5,15 @@ module Api
     class UsersController < BaseController
       def index
         users = User.includes(:order_queues, :notifications)
+                    .where(role: :client)
                     .order(created_at: :desc)
                     .page(params[:page])
                     .per(params[:per_page] || 20)
 
         render json: {
           users: users.map { |user| user_response(user) },
-          pagination: pagination_meta(users)
+          pagination: pagination_meta(users),
+          total_count: users.total_count
         }
       end
 

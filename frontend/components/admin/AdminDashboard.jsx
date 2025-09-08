@@ -80,6 +80,8 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchDashboardData = async () => {
+      let apiResponses = {}; // Для логирования в случае ошибки
+
       try {
         // Fetch dashboard statistics
         const [clientsRes, ordersRes, imagesRes, projectsRes] =
@@ -90,12 +92,30 @@ const AdminDashboard = () => {
             api.get('/admin/projects?page=1&per_page=1'),
           ]);
 
-        setStats({
-          clients: clientsRes.data.total_count || 0,
-          orders: ordersRes.data.total_count || 0,
-          images: imagesRes.data.total_count || 0,
-          projects: projectsRes.data.total_count || 0,
-        });
+        // Сохраняем ответы для возможного логирования
+        apiResponses = { clientsRes, ordersRes, imagesRes, projectsRes };
+
+        // Безопасное извлечение total_count с fallback
+        const getCount = response => {
+          // Проверяем существование response и data
+          if (!response || !response.data) {
+            // eslint-disable-next-line no-console
+            console.warn('Invalid API response structure:', response);
+            return 0;
+          }
+
+          // Ищем total_count в data объекте или на верхнем уровне ответа
+          return response.data.total_count ?? response.total_count ?? 0;
+        };
+
+        const newStats = {
+          clients: getCount(clientsRes),
+          orders: getCount(ordersRes),
+          images: getCount(imagesRes),
+          projects: getCount(projectsRes),
+        };
+
+        setStats(newStats);
 
         // Fetch recent orders
         const recentOrdersRes = await api.get(
@@ -108,50 +128,50 @@ const AdminDashboard = () => {
           cycleProgress: [
             {
               month: 'Jan',
-              cycles: Math.floor(stats.orders * 0.8),
-              target: stats.orders,
+              cycles: Math.floor(newStats.orders * 0.8),
+              target: newStats.orders,
             },
             {
               month: 'Feb',
-              cycles: Math.floor(stats.orders * 0.9),
-              target: stats.orders,
+              cycles: Math.floor(newStats.orders * 0.9),
+              target: newStats.orders,
             },
             {
               month: 'Mar',
-              cycles: Math.floor(stats.orders * 0.7),
-              target: stats.orders,
+              cycles: Math.floor(newStats.orders * 0.7),
+              target: newStats.orders,
             },
             {
               month: 'Apr',
-              cycles: Math.floor(stats.orders * 1.1),
-              target: stats.orders,
+              cycles: Math.floor(newStats.orders * 1.1),
+              target: newStats.orders,
             },
             {
               month: 'May',
-              cycles: Math.floor(stats.orders * 1.2),
-              target: stats.orders,
+              cycles: Math.floor(newStats.orders * 1.2),
+              target: newStats.orders,
             },
-            { month: 'Jun', cycles: stats.orders, target: stats.orders },
+            { month: 'Jun', cycles: newStats.orders, target: newStats.orders },
           ],
           orderStatus: [
             {
               name: 'Completed',
-              value: Math.floor(stats.orders * 0.6),
+              value: Math.floor(newStats.orders * 0.6),
               color: '#4caf50',
             },
             {
               name: 'In Progress',
-              value: Math.floor(stats.orders * 0.3),
+              value: Math.floor(newStats.orders * 0.3),
               color: '#2196f3',
             },
             {
               name: 'Pending',
-              value: Math.floor(stats.orders * 0.08),
+              value: Math.floor(newStats.orders * 0.08),
               color: '#ff9800',
             },
             {
               name: 'Cancelled',
-              value: Math.floor(stats.orders * 0.02),
+              value: Math.floor(newStats.orders * 0.02),
               color: '#f44336',
             },
           ],
@@ -159,8 +179,24 @@ const AdminDashboard = () => {
 
         showSuccess('Dashboard data loaded successfully');
       } catch (error) {
-        showError('Failed to fetch dashboard data. Please try again.');
+        // Улучшенная обработка ошибок с детальным логированием
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch dashboard data:', error);
+
+        // Логируем ответы API если они доступны
+        if (Object.keys(apiResponses).length > 0) {
+          // eslint-disable-next-line no-console
+          console.error('API responses for debugging:', {
+            clientsRes: apiResponses.clientsRes?.data || 'No response',
+            ordersRes: apiResponses.ordersRes?.data || 'No response',
+            imagesRes: apiResponses.imagesRes?.data || 'No response',
+            projectsRes: apiResponses.projectsRes?.data || 'No response',
+          });
+        }
+
+        showError(
+          'Failed to fetch dashboard data. Please check the console for details.'
+        );
       } finally {
         setLoading(false);
       }

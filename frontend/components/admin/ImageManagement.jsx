@@ -96,7 +96,7 @@ const ImageManagement = () => {
       setUploading(true);
 
       const imageData = {
-        ...imageForm
+        ...imageForm,
       };
 
       let response;

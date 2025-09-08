@@ -287,11 +287,7 @@ const AdminLogs = () => {
                 Clear Filters
               </Button>
 
-              <Button
-                size="small"
-                startIcon={<FilterList />}
-                disabled
-              >
+              <Button size="small" startIcon={<FilterList />} disabled>
                 More Filters
               </Button>
             </Box>

@@ -18,6 +18,7 @@ module Api
         render json: {
           orders: orders.map { |order| order_response(order) },
           pagination: pagination_meta(orders),
+          total_count: orders.total_count,
           filters: {
             statuses: OrderQueue.statuses.keys,
             priorities: OrderQueue.priorities.keys
