@@ -43,3 +43,11 @@ npm-debug.log
 .claude/tmp/debug-2025-09-07T19-07-35-075Z.png
 .claude/tmp/debug-2025-09-07T19-08-16-274Z.png
 .claude/tmp/debug-2025-09-07T19-08-37-105Z.png
+
+# Vite Ruby
+/public/vite*
+node_modules
+# Vite uses dotenv and suggests to ignore local-only env files. See
+# https://vitejs.dev/guide/env-and-mode.html#env-files
+*.local
+

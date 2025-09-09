@@ -2,10 +2,8 @@
 <html>
   <head>
     <title>Atom Sergal - Beyond Home</title>
-    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+    <%= favicon_link_tag 'favicon.svg', type: 'image/svg+xml' %>
     <%= csrf_meta_tags %>
-    <%= javascript_include_tag 'vendors.bundle' %>
-    <%= javascript_include_tag 'main.bundle' %>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -20,6 +18,18 @@
       analytics.page();
       }}();
     </script>
+    <%= vite_client_tag %>
+    <%= vite_javascript_tag 'application.jsx' %>
+    <!--
+      If using a TypeScript entrypoint file:
+        vite_typescript_tag 'application'
+
+      If using a .jsx or .tsx entrypoint, add the extension:
+        vite_javascript_tag 'application.jsx'
+
+      Visit the guide for more information: https://vite-ruby.netlify.app/guide/rails
+    -->
+
   </head>
 
   <body>

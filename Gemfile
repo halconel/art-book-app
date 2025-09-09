@@ -16,6 +16,8 @@ gem 'pg', '~> 1.5'
 gem 'puma', '~> 6.0'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1'
+# Modern frontend development with Vite
+gem 'vite_rails', '~> 3.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes

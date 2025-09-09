@@ -1,0 +1,112 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+README*
+CHANGELOG*
+LICENSE*
+docs/
+
+# Development files
+.env*
+.ruby-version
+.ruby-lsp/
+.rspec
+.rubocop.yml
+.prettierrc
+.eslintrc.js
+.eslintignore
+.babelrc
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files  
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+log/
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage and test files
+coverage/
+.nyc_output/
+spec/
+test/
+.rspec_status
+
+# Dependencies (will be installed in container)
+node_modules/
+.bundle/
+vendor/bundle/
+
+# Build artifacts that will be recreated
+tmp/
+*.tmp
+.tmp/
+public/assets/
+app/assets/javascripts/*.js
+app/assets/javascripts/*.js.map
+
+# Development databases
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-*
+db/*.sqlite3
+db/*.sqlite3-journal
+db/*.sqlite3-*
+
+# Cache
+.sass-cache/
+.cache/
+
+# Docker specific
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+.husky/
+
+# Claude and development tools
+.claude/
+TRANSFORMATION_PLAN.md
+TECHNICAL_SPECIFICATION.md
+FEATURE_*.md
+ENVIRONMENT_SETUP.md
+
+# Temporary files
+*.swp
+*.swo
+.byebug_history
+
+# Configuration files (will be handled via env vars)
+config/master.key
+config/credentials.yml.enc

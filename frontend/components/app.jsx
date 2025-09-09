@@ -3,7 +3,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, CircularProgress, Box } from '@mui/material';
 
-import HomeContainer from './home/home_container';
+import HomeContainer from './home/home_container.jsx';
 import GalleryContainer from './gallery/gallery_container';
 import AboutContainer from './about/about_container';
 import Navigation from './navigation/navigation';

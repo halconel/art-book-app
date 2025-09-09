@@ -27,17 +27,17 @@ const MetadataOverlay = ({ image }) => {
       <div className="top-bottom-gradient-shadow" />
       <div className="metadata-blocks">
         <div className="metadata-blocks-left">
-          <div className="metadata-block size-block">
-            <div className="metadata-label">SIZE:</div>
-            <div className="metadata-value">
-              {formatDimensions(image.width, image.height)}
-            </div>
-          </div>
-
           <div className="metadata-block description-block">
             <div className="metadata-label">DESCRIPTION:</div>
             <div className="metadata-value">
               {image.description || 'Digital Illustration'}
+            </div>
+          </div>
+
+          <div className="metadata-block size-block">
+            <div className="metadata-label">SIZE:</div>
+            <div className="metadata-value">
+              {formatDimensions(image.width, image.height)}
             </div>
           </div>
 

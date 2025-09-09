@@ -21,14 +21,16 @@ import {
   TextField,
   CircularProgress,
   Alert,
+  Divider,
+} from '@mui/material';
+import {
   Timeline,
   TimelineItem,
   TimelineSeparator,
   TimelineConnector,
   TimelineContent,
   TimelineDot,
-  Divider,
-} from '@mui/material';
+} from '@mui/lab';
 import {
   ArrowBack,
   Schedule,
