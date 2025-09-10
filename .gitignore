@@ -44,6 +44,9 @@ npm-debug.log
 .claude/tmp/debug-2025-09-07T19-08-16-274Z.png
 .claude/tmp/debug-2025-09-07T19-08-37-105Z.png
 
+# Environment variables
+.env
+
 # Vite Ruby
 /public/vite*
 node_modules

@@ -48,3 +48,4 @@ gh issue close [номер] --repo halconel/art-book-app
 ```
 
 - При указании номера проблемы/задачи (issue) нужно сначала прочитать содержимое проблемы используя команду выше
+- Используй mcp figma для получения доступа к дизайну. Cсылка: 'https://www.figma.com/design/2bBYuF2MmKZQflUiDZ0O45/Beyond-Home?node-id=332-6&t=2pC7SXDWMCKcgmZo-4'
