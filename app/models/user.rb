@@ -17,7 +17,7 @@ class User < ApplicationRecord
   before_create :generate_verification_token
 
   attr_encrypted :contact_info,
-                 key: Rails.application.credentials.encryption_key,
+                 key: ENV['ENCRYPTION_KEY'] || 'default_key_for_development_only_123',
                  algorithm: 'aes-256-gcm'
 
   scope :verified, -> { where.not(verified_at: nil) }

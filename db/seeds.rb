@@ -8,7 +8,7 @@ puts "🌱 Seeding database..."
 # Создание админа (художника) Atom Sergal
 admin_user = User.create!(
   email: 'admin@artbook.com',
-  password: 'admin_password_123',
+  password: 'admin123',
   first_name: 'Atom',
   last_name: 'Sergal',
   role: 'admin',
@@ -37,18 +37,71 @@ personal_project = Project.create!(
   is_personal: true
 )
 
-# Добавление изображений к личному проекту
-['https://cdnb.artstation.com/p/assets/images/images/046/409/941/large/change-forge-of-universes-los-02-liminality-mini.jpg',
- 'https://cdnb.artstation.com/p/assets/images/images/046/409/692/large/change-forge-of-universes-los-01-civit-mini.jpg',
- 'https://cdnb.artstation.com/p/assets/images/images/044/258/645/large/change-forge-of-universes-.jpg',
- 'https://cdnb.artstation.com/p/assets/images/images/046/409/302/large/change-forge-of-universes-los-00-out-there-mini.jpg'].each_with_index do |url, index|
+# Горизонтальные изображения из ARTS.MD
+horizontal_artworks = [
+  {
+    url: 'https://cdnb.artstation.com/p/assets/images/images/091/586/747/large/change-forge-of-universes-drifting.jpg?1757233445',
+    title: 'Drifting',
+    description: 'Atmospheric space scene showcasing the vastness and solitude of cosmic exploration.',
+    width: 3840,
+    height: 2160
+  },
+  {
+    url: 'https://cdnb.artstation.com/p/assets/images/images/091/586/592/large/change-forge-of-universes-los-00-out-there.jpg?1757232667',
+    title: 'Out There',
+    description: 'Expansive landscape depicting the unknown frontier and endless possibilities.',
+    width: 3840,
+    height: 2160
+  },
+  {
+    url: 'https://cdnb.artstation.com/p/assets/images/images/091/586/585/large/change-forge-of-universes-los-01-civit.jpg?1757232639',
+    title: 'Civit',
+    description: 'Urban civilization merged with futuristic technology, showing harmony between nature and progress.',
+    width: 3840,
+    height: 2160
+  },
+  {
+    url: 'https://cdnb.artstation.com/p/assets/images/images/091/586/543/large/change-forge-of-universes-los-03-liminality.jpg?1757232464',
+    title: 'Liminality',
+    description: 'Threshold spaces between worlds, exploring transitional states and dimensional boundaries.',
+    width: 3840,
+    height: 2160
+  },
+  {
+    url: 'https://cdnb.artstation.com/p/assets/images/images/091/585/847/large/change-forge-of-universes-for-nodata.jpg?1757228576',
+    title: 'For NoData',
+    description: 'Abstract digital landscape representing the void between information and understanding.',
+    width: 3840,
+    height: 2160
+  },
+  {
+    url: 'https://cdnb.artstation.com/p/assets/images/images/091/586/029/large/change-forge-of-universes-laserscope-for-dred700-publ.jpg?1757229532',
+    title: 'Laserscope',
+    description: 'High-tech targeting system visualization with precision mechanics and advanced optics.',
+    width: 3840,
+    height: 2160
+  },
+  {
+    url: 'https://cdnb.artstation.com/p/assets/images/images/091/486/057/large/change-forge-of-universes-ych-full-art-tourism-v2.jpg?1756922132',
+    title: 'Tourism V2',
+    description: 'Futuristic travel destination showcasing exotic locations and advanced transportation methods.',
+    width: 3840,
+    height: 2160
+  }
+]
+
+# Добавление горизонтальных изображений к личному проекту
+horizontal_artworks.each_with_index do |artwork, index|
   Image.create!(
     project: personal_project,
-    caption: "Beyond Home - Part #{index + 1}",
-    img_url: url,
+    caption: "Beyond Home - #{artwork[:title]}",
+    img_url: artwork[:url],
     show_on_main_page: true,
-    title: "Artwork #{index + 1}",
-    description: "Part #{index + 1} of the Beyond Home series"
+    title: artwork[:title],
+    description: artwork[:description],
+    width: artwork[:width],
+    height: artwork[:height],
+    file_size: rand(2_000_000..8_000_000) # Случайный размер файла от 2MB до 8MB
   )
 end
 
@@ -131,6 +184,6 @@ end
 puts "✅ Seeds созданы успешно!"
 puts "👤 Admin: admin@artbook.com / admin_password_123"
 puts "👤 Test Client: client@test.com / client_password_123"
-puts "🎨 Проект: Beyond Home с 4 изображениями"
+puts "🎨 Проект: Beyond Home с 7 горизонтальными изображениями"
 puts "📋 Тестовый заказ с FutureArt и уведомлениями"
 puts "📅 30 дней данных календаря рабочих нагрузок"

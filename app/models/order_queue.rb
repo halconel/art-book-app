@@ -27,7 +27,7 @@ class OrderQueue < ApplicationRecord
   validates :deadline, presence: true
 
   attr_encrypted :price,
-                 key: Rails.application.credentials.encryption_key,
+                 key: ENV['ENCRYPTION_KEY'] || 'default_key_for_development_only_123',
                  algorithm: 'aes-256-gcm',
                  encode: true,
                  attribute: :encrypted_price
