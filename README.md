@@ -147,7 +147,7 @@ ArtBook is a portfolio showcase web application. It is a full-stack app built us
 
    **Терминал 1 - Rails сервер:**
    ```bash
-   bundle exec rails server -p 3001
+   bundle exec rails server -p 3000
    ```
 
    **Терминал 2 - Webpack для фронтенда:**
@@ -159,7 +159,7 @@ ArtBook is a portfolio showcase web application. It is a full-stack app built us
    
    После запуска обоих серверов откройте браузер и перейдите по адресу:
    ```
-   http://127.0.0.1:3001
+   http://127.0.0.1:3000
    ```
 
 ### Проверка установки
@@ -211,6 +211,7 @@ npm cache clean --force
 rm -rf node_modules package-lock.json
 npm install
 ```
+# UPDATE: 09.09.25 - миграция на vite HMR, проблем не должно возникать
 
 ## Design
 
