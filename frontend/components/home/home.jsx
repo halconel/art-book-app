@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { fetchMainPageImages } from '../../actions/image_actions';
+import { preloadNextImages } from '../../actions/slideshow_actions';
 import HeroSlideshow from './hero/hero_slideshow';
 import AboutSection from './about/about_section';
 import Footer from './about/footer';
@@ -9,6 +10,7 @@ const Home = ({
   images,
   fetchMainPageImages: fetchImages,
   currentImageIndex,
+  preloadNextImages: preloadImages,
 }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [nextSlideIndex, setNextSlideIndex] = useState(0);
@@ -17,6 +19,13 @@ const Home = ({
   useEffect(() => {
     fetchImages();
   }, [fetchImages]);
+
+  // Initialize preloading when images are loaded
+  useEffect(() => {
+    if (images && images.length > 0) {
+      preloadImages();
+    }
+  }, [images, preloadImages]);
 
   useEffect(() => {
     if (
@@ -30,7 +39,7 @@ const Home = ({
       setTimeout(() => {
         setCurrentSlideIndex(currentImageIndex);
         setIsTransitioning(false);
-      }, 500); // Half of the fade duration
+      }, 150); // Half of the fade duration
     }
   }, [currentImageIndex, currentSlideIndex, images]);
 
@@ -63,6 +72,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchMainPageImages: () => dispatch(fetchMainPageImages()),
+  preloadNextImages: () => dispatch(preloadNextImages()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

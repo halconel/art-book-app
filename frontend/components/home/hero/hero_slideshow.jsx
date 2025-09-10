@@ -10,13 +10,17 @@ const HeroSlideshow = ({ currentImage, nextImage, isTransitioning }) => {
           className={`slide ${!isTransitioning ? 'active' : ''}`}
           style={{
             backgroundImage: `url(${currentImage.img_url})`,
+            opacity: isTransitioning ? '0' : '1',
           }}
         />
+      </div>
+      <div>
         {isTransitioning && nextImage && (
           <div
             className="slide slide-next active"
             style={{
               backgroundImage: `url(${nextImage.img_url})`,
+              opacity: isTransitioning ? '1' : '0',
             }}
           />
         )}

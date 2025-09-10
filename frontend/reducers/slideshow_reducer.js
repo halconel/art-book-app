@@ -3,12 +3,14 @@ import {
   TOGGLE_PLAY_PAUSE,
   SET_IS_PLAYING,
   UPDATE_LAST_CHANGE_TIME,
+  SET_PRELOADED_IMAGES,
 } from '../actions/slideshow_actions';
 
 const initialState = {
   currentImageIndex: 0,
   isPlaying: true,
   lastChangeTime: Date.now(),
+  preloadedImages: {},
 };
 
 const slideshowReducer = (state = initialState, action) => {
@@ -32,6 +34,11 @@ const slideshowReducer = (state = initialState, action) => {
       return {
         ...state,
         lastChangeTime: action.timestamp,
+      };
+    case SET_PRELOADED_IMAGES:
+      return {
+        ...state,
+        preloadedImages: action.preloadedImages,
       };
     default:
       return state;
