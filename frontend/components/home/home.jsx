@@ -15,17 +15,19 @@ const Home = ({
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [nextSlideIndex, setNextSlideIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [preloadInitialized, setPreloadInitialized] = useState(false);
 
   useEffect(() => {
     fetchImages();
-  }, [fetchImages]);
+  }, []); // Remove fetchImages from dependencies - only run once on mount
 
   // Initialize preloading when images are loaded
   useEffect(() => {
-    if (images && images.length > 0) {
+    if (images && images.length > 0 && !preloadInitialized) {
       preloadImages();
+      setPreloadInitialized(true);
     }
-  }, [images, preloadImages]);
+  }, [images?.length, preloadInitialized]); // Only depend on length, not the array itself
 
   useEffect(() => {
     if (

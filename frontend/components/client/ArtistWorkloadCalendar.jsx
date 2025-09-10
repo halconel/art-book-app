@@ -54,8 +54,6 @@ const ArtistWorkloadCalendar = () => {
       setError('');
     } catch (err) {
       setError('Failed to fetch artist workload data');
-      // eslint-disable-next-line no-console
-      console.error('Failed to fetch workload data:', err);
     } finally {
       setLoading(false);
     }

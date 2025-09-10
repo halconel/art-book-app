@@ -67,8 +67,6 @@ const OrderDetail = () => {
       setError('');
     } catch (err) {
       setError('Failed to fetch order details');
-      // eslint-disable-next-line no-console
-      console.error('Failed to fetch order:', err);
     } finally {
       setLoading(false);
     }
@@ -88,8 +86,6 @@ const OrderDetail = () => {
       fetchOrderDetail();
     } catch (err) {
       setError('Failed to submit refund request');
-      // eslint-disable-next-line no-console
-      console.error('Failed to submit refund request:', err);
     }
   };
 

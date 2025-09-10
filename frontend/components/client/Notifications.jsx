@@ -64,8 +64,6 @@ const Notifications = () => {
       setError('');
     } catch (err) {
       setError('Failed to fetch notifications');
-      // eslint-disable-next-line no-console
-      console.error('Failed to fetch notifications:', err);
     } finally {
       setLoading(false);
     }
@@ -83,8 +81,6 @@ const Notifications = () => {
       );
     } catch (err) {
       setError('Failed to mark notification as read');
-      // eslint-disable-next-line no-console
-      console.error('Failed to mark as read:', err);
     }
   };
 
@@ -100,8 +96,6 @@ const Notifications = () => {
       );
     } catch (err) {
       setError('Failed to mark notification as unread');
-      // eslint-disable-next-line no-console
-      console.error('Failed to mark as unread:', err);
     }
   };
 
@@ -113,8 +107,6 @@ const Notifications = () => {
       );
     } catch (err) {
       setError('Failed to delete notification');
-      // eslint-disable-next-line no-console
-      console.error('Failed to delete notification:', err);
     }
   };
 
@@ -126,8 +118,6 @@ const Notifications = () => {
       setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
     } catch (err) {
       setError('Failed to mark all as read');
-      // eslint-disable-next-line no-console
-      console.error('Failed to mark all as read:', err);
     }
   };
 

@@ -83,8 +83,6 @@ const ClientProfile = () => {
       setError('');
     } catch (err) {
       setError('Failed to fetch profile data');
-      // eslint-disable-next-line no-console
-      console.error('Failed to fetch profile:', err);
     } finally {
       setLoading(false);
     }
@@ -95,8 +93,7 @@ const ClientProfile = () => {
       const response = await api.get('/client/stats');
       setStats(response.data.stats || {});
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to fetch stats:', err);
+      // Silent error handling
     }
   };
 
@@ -105,8 +102,7 @@ const ClientProfile = () => {
       const response = await api.get('/client/recent-activity?limit=5');
       setRecentActivity(response.data.activities || []);
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to fetch recent activity:', err);
+      // Silent error handling
     }
   };
 
@@ -118,8 +114,6 @@ const ClientProfile = () => {
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       setError('Failed to update profile');
-      // eslint-disable-next-line no-console
-      console.error('Failed to update profile:', err);
     } finally {
       setSaving(false);
     }
@@ -146,8 +140,6 @@ const ClientProfile = () => {
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       setError('Failed to change password');
-      // eslint-disable-next-line no-console
-      console.error('Failed to change password:', err);
     }
   };
 

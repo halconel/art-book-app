@@ -22,10 +22,13 @@ const SlideshowTimer = ({
   return null; // This component doesn't render anything
 };
 
-const mapStateToProps = state => ({
-  isPlaying: state.slideshow.isPlaying,
-  imagesLength: Object.values(state.images).length,
-});
+const mapStateToProps = state => {
+  const imagesLength = Object.keys(state.images).length; // Use keys for better performance
+  return {
+    isPlaying: state.slideshow.isPlaying,
+    imagesLength,
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   autoAdvanceSlideshow: () => dispatch(autoAdvanceSlideshow()),

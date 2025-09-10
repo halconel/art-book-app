@@ -44,9 +44,6 @@ export const nextImage = () => (dispatch, getState) => {
     dispatch(setCurrentImageIndex(nextIndex));
     dispatch(updateLastChangeTime());
     dispatch(setIsPlaying(false)); // Stop auto-play when user manually navigates
-    
-    // Preload next images after manual navigation
-    dispatch(preloadNextImages());
   }
 };
 
@@ -65,9 +62,6 @@ export const previousImage = () => (dispatch, getState) => {
     dispatch(setCurrentImageIndex(prevIndex));
     dispatch(updateLastChangeTime());
     dispatch(setIsPlaying(false)); // Stop auto-play when user manually navigates
-    
-    // Preload next images after manual navigation
-    dispatch(preloadNextImages());
   }
 };
 
@@ -90,20 +84,21 @@ const preloadImage = url => {
 export const preloadNextImages = () => (dispatch, getState) => {
   const { images, slideshow } = getState();
   const imageList = Object.values(images);
-  
+
   if (imageList.length === 0) return;
 
-  const currentIndex = slideshow.currentImageIndex >= imageList.length 
-    ? 0 
-    : slideshow.currentImageIndex;
-  
+  const currentIndex =
+    slideshow.currentImageIndex >= imageList.length
+      ? 0
+      : slideshow.currentImageIndex;
+
   // Preload next 2 images
   const nextIndex = (currentIndex + 1) % imageList.length;
   const afterNextIndex = (currentIndex + 2) % imageList.length;
-  
+
   const imagesToPreload = [
     imageList[nextIndex]?.img_url,
-    imageList[afterNextIndex]?.img_url
+    imageList[afterNextIndex]?.img_url,
   ].filter(Boolean);
 
   Promise.all(imagesToPreload.map(preloadImage))
@@ -112,11 +107,10 @@ export const preloadNextImages = () => (dispatch, getState) => {
         acc[imagesToPreload[index]] = img;
         return acc;
       }, {});
-      console.log('✅ Preloaded images:', Object.keys(preloadedUrls));
       dispatch(setPreloadedImages(preloadedUrls));
     })
     .catch(error => {
-      console.warn('❌ Failed to preload some images:', error);
+      // Silent error handling
     });
 };
 
@@ -134,8 +128,5 @@ export const autoAdvanceSlideshow = () => (dispatch, getState) => {
     const nextIndex = (currentIndex + 1) % imageList.length;
     dispatch(setCurrentImageIndex(nextIndex));
     dispatch(updateLastChangeTime());
-    
-    // Preload next images after advancing
-    dispatch(preloadNextImages());
   }
 };

@@ -1,5 +1,8 @@
 // Font definitions for Beyond Home application
 
+// Google Fonts import for Space Mono (reliable LED-style monospace)
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 @font-face {
   font-family: 'Andvari';
   src: url('../assets/fonts/andvari.ttf') format('truetype');
@@ -10,8 +13,7 @@
 
 @font-face {
   font-family: 'Erbos Draco 1st NBP';
-  src: url('../assets/fonts/ERBOSDRACO1STNBPREGULAR-99V5.TTF')
-    format('truetype');
+  src: url('../assets/fonts/erbos_draco_1st_nbp.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -19,8 +21,7 @@
 
 @font-face {
   font-family: 'Erbos Draco 1st Open NBP';
-  src: url('../assets/fonts/ERBOSDRACO1STOPENNBPREGULAR-L5WX.TTF')
-    format('truetype');
+  src: url('../assets/fonts/erbos_draco_1st_open_nbp.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;

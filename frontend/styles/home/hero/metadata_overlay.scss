@@ -6,7 +6,7 @@
   right: 0;
   z-index: 15;
   pointer-events: none;
-  font-family: 'Erbos Draco 1st Open NBP', monospace;
+  font-family: 'Erbos Draco 1st Open NBP', 'Space Mono', monospace;
   color: white;
 
   .top-bottom-gradient-shadow {
@@ -51,7 +51,7 @@
       align-items: flex-start;
 
       .metadata-label {
-        font-family: 'Erbos Draco 1st Open NBP', monospace;
+        font-family: 'Erbos Draco 1st Open NBP', 'Space Mono', monospace;
         font-size: 14px;
         font-weight: normal;
         color: #ffffff;
@@ -61,15 +61,14 @@
       }
 
       .metadata-value {
-        font-family: 'Erbos Draco 1st Open NBP', monospace;
+        font-family: 'Erbos Draco 1st Open NBP', 'Space Mono', monospace;
         font-size: 14px;
         color: #ffffff;
         text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
         min-height: 20px;
       }
 
-      Fixed widths for specific blocks to prevent shifting
-      &.size-block {
+      Fixed widths for specific blocks to prevent shifting &.size-block {
         width: 100px;
       }
 
@@ -94,7 +93,7 @@
           align-items: flex-end;
 
           .barcode-wrapper {
-            height: 16px;
+            height: 22px;
             overflow: hidden;
             margin-bottom: 2px;
             display: flex;
@@ -114,7 +113,7 @@
           }
 
           .artwork-title {
-            font-family: 'Erbos Draco 1st Open NBP', monospace;
+            font-family: 'Erbos Draco 1st Open NBP', 'Space Mono', monospace;
             font-size: 14px;
             color: #ffffff;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);

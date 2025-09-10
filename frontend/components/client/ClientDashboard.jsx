@@ -74,8 +74,7 @@ const ClientDashboard = () => {
         };
         setStats(orderStats);
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to fetch dashboard data:', error);
+        // Silent error handling
       } finally {
         setLoading(false);
       }
