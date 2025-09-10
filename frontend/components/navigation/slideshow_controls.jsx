@@ -51,49 +51,20 @@ const SlideshowControls = ({
         onClick={onPrevious}
         title="Previous Image"
       >
-        <div className="notch-left">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M12 15L7 10L12 5"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+        <img src="/assets/prev.svg" alt="Prev" />
       </button>
 
       <div className="play-pause-container">
-        <ProgressRing progress={progress} />
+        <ProgressRing progress={progress} strokeWidth="5" />
         <button
           className="slideshow-control-btn play-pause-btn"
           onClick={onTogglePlay}
           title={isPlaying ? 'Pause Slideshow' : 'Play Slideshow'}
         >
           {isPlaying ? (
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <rect
-                x="3"
-                y="2"
-                width="3"
-                height="12"
-                fill="currentColor"
-                rx="0.5"
-              />
-              <rect
-                x="10"
-                y="2"
-                width="3"
-                height="12"
-                fill="currentColor"
-                rx="0.5"
-              />
-            </svg>
+            <img src="/assets/pause.svg" alt="Pause" />
           ) : (
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M5 3L13 8L5 13V3Z" fill="currentColor" />
-            </svg>
+            <img src="/assets/play.svg" alt="Play" />
           )}
         </button>
       </div>
@@ -103,17 +74,7 @@ const SlideshowControls = ({
         onClick={onNext}
         title="Next Image"
       >
-        <div className="notch-right">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M8 5L13 10L8 15"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+        <img src="/assets/next.svg" alt="Next" />
       </button>
     </div>
   );

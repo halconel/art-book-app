@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProgressRing = ({ progress = 0, size = 60, strokeWidth = 3 }) => {
+const ProgressRing = ({ progress = 0, size = 45, strokeWidth = 3 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference * (1 - progress / 100);
@@ -18,8 +18,9 @@ const ProgressRing = ({ progress = 0, size = 60, strokeWidth = 3 }) => {
       />
       <circle
         className="progress-ring-circle"
-        stroke="rgba(255, 255, 255, 0.8)"
+        stroke="#FE4A56"
         strokeWidth={strokeWidth}
+        strokeLinecap="round"
         fill="transparent"
         r={radius}
         cx={size / 2}
