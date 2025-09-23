@@ -45,28 +45,42 @@ const PublicGallery = () => {
   const [tagFilter, setTagFilter] = useState('all');
   const [allTags, setAllTags] = useState([]);
   const [favorites, setFavorites] = useState(new Set());
+  const [pagination, setPagination] = useState({});
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     fetchGallery();
   }, []);
 
-  const fetchGallery = async () => {
+  // Refetch when search or filter changes
+  useEffect(() => {
+    fetchGallery(1, searchTerm, tagFilter !== 'all' ? tagFilter : null);
+  }, [searchTerm, tagFilter]);
+
+  const fetchGallery = async (page = 1, search = '', tags = null) => {
     try {
       setLoading(true);
-      // Use public API endpoint that doesn't require authentication
-      const response = await api.get('/gallery/images');
-
-      const galleryImages = response.data.images || [];
-      setImages(galleryImages);
-
-      // Extract all unique tags
-      const tags = new Set();
-      galleryImages.forEach(image => {
-        if (image.tags) {
-          image.tags.forEach(tag => tags.add(tag));
-        }
+      // Use the new Gallery API endpoint with pagination and filtering
+      const params = new URLSearchParams({
+        page: page.toString(),
+        ...(search && { search }),
+        ...(tags && { tags: Array.isArray(tags) ? tags.join(',') : tags })
       });
-      setAllTags(Array.from(tags).sort());
+
+      const response = await api.get(`/gallery?${params}`);
+      const data = response.data;
+
+      if (page === 1) {
+        setImages(data.images || []);
+      } else {
+        setImages(prev => [...prev, ...data.images || []]);
+      }
+
+      // Set pagination info
+      setPagination(data.pagination || {});
+
+      // Set available tags from filters
+      setAllTags(data.filters?.available_tags || []);
 
       setError('');
     } catch (err) {
@@ -136,30 +150,20 @@ const PublicGallery = () => {
     }
   };
 
-  const getFilteredImages = () => {
-    let filtered = images.filter(image => image.is_visible !== false);
+  const loadMoreImages = async () => {
+    if (loadingMore || !pagination.has_more) return;
 
-    // Apply search filter
-    if (searchTerm) {
-      filtered = filtered.filter(
-        image =>
-          image.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          image.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          image.tags?.some(tag =>
-            tag.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-      );
-    }
-
-    // Apply tag filter
-    if (tagFilter !== 'all') {
-      filtered = filtered.filter(image => image.tags?.includes(tagFilter));
-    }
-
-    return filtered;
+    setLoadingMore(true);
+    await fetchGallery(
+      pagination.current_page + 1,
+      searchTerm,
+      tagFilter !== 'all' ? tagFilter : null
+    );
+    setLoadingMore(false);
   };
 
-  const filteredImages = getFilteredImages();
+  // Since filtering is now done on the backend, we just return the images
+  const filteredImages = images;
 
   // Load favorites from localStorage on component mount
   useEffect(() => {
@@ -183,7 +187,7 @@ const PublicGallery = () => {
   }
 
   return (
-    <Box>
+    <Box className="public-gallery">
       {/* Header */}
       <Box sx={{ textAlign: 'center', mb: 4 }}>
         <Typography variant="h2" component="h1" gutterBottom>
@@ -367,6 +371,21 @@ const PublicGallery = () => {
               ? 'Try adjusting your search or filter criteria'
               : 'The gallery is currently empty'}
           </Typography>
+        </Box>
+      )}
+
+      {/* Load More Button */}
+      {pagination.has_more && (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={loadMoreImages}
+            disabled={loadingMore}
+            sx={{ minWidth: 200 }}
+          >
+            {loadingMore ? <CircularProgress size={24} /> : 'Load More'}
+          </Button>
         </Box>
       )}
 

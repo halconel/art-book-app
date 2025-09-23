@@ -86,4 +86,7 @@ Rails.application.routes.draw do
       resources :refund_requests, only: [:index, :show, :create]
     end
   end
+
+  # Catch-all route for React Router (must be last)
+  get '*path', to: 'static_pages#root'
 end

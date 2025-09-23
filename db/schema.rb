@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_06_102732) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_23_174832) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,7 +61,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_06_102732) do
     t.integer "width"
     t.integer "height"
     t.bigint "file_size"
+    t.text "tags", default: [], array: true
+    t.string "alt_text"
+    t.boolean "is_featured", default: false
+    t.index ["is_featured"], name: "index_images_on_is_featured"
     t.index ["project_id"], name: "index_images_on_project_id"
+    t.index ["tags"], name: "index_images_on_tags", using: :gin
   end
 
   create_table "notifications", force: :cascade do |t|

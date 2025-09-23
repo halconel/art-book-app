@@ -4,7 +4,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, CircularProgress, Box } from '@mui/material';
 
 import HomeContainer from './home/home_container.jsx';
-import GalleryContainer from './gallery/gallery_container';
 import AboutContainer from './about/about_container';
 import Navigation from './navigation/navigation';
 import SlideshowTimer from './slideshow_timer';
@@ -157,7 +156,9 @@ const App = () => {
                     <Navigation />
                     <SlideshowTimer />
                     <main className="main-content">
-                      <GalleryContainer />
+                      <Suspense fallback={<LoadingSpinner />}>
+                        <PublicGallery />
+                      </Suspense>
                     </main>
                   </div>
                 }

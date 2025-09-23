@@ -2,17 +2,48 @@
 
 module Api
   class GalleryController < ApplicationController
-    # Public endpoint - no authentication required
-    skip_before_action :authenticate_user!, only: %i[index show]
+    ITEMS_PER_PAGE = 24
 
     def index
+      page = (params[:page] || 1).to_i
+      search_query = params[:search]
+      tag_filter = params[:tags]
+
       images = Image.visible
                     .featured_first
                     .includes(:project)
-                    .limit(100)
+
+      # Apply search filter
+      if search_query.present?
+        images = images.where('images.title ILIKE ?', "%#{search_query}%")
+      end
+
+      # Apply tag filter
+      images = images.by_tags(tag_filter) if tag_filter.present?
+
+      # Pagination
+      offset = (page - 1) * ITEMS_PER_PAGE
+      paginated_images = images.limit(ITEMS_PER_PAGE).offset(offset)
+
+      # Check if there are more images
+      has_more = images.limit(ITEMS_PER_PAGE + 1).offset(offset).count > ITEMS_PER_PAGE
+
+      # Get all available tags for filtering
+      all_tags = Image.visible.where.not(tags: []).distinct.pluck(:tags).flatten.uniq.compact.sort
 
       render json: {
-        images: images.map { |image| format_public_image(image) }
+        images: paginated_images.map { |image| format_public_image(image) },
+        pagination: {
+          current_page: page,
+          per_page: ITEMS_PER_PAGE,
+          has_more: has_more,
+          total_count: images.count
+        },
+        filters: {
+          available_tags: all_tags,
+          applied_search: search_query,
+          applied_tags: tag_filter
+        }
       }
     end
 
@@ -30,11 +61,12 @@ module Api
         id: image.id,
         title: image.title,
         description: image.description,
-        url: image.url,
+        url: image.img_url,
         thumbnail_url: image.thumbnail_url,
         alt_text: image.alt_text,
-        tags: image.tags || [],
+        tags: image.tags,
         is_featured: image.is_featured,
+        aspect_ratio: image.aspect_ratio,
         created_at: image.created_at,
         project: if image.project
                    {
@@ -45,12 +77,7 @@ module Api
       }.tap do |result|
         if include_details
           result[:metadata] = image.metadata
-          if image.width && image.height
-            result[:dimensions] = {
-              width: image.width,
-              height: image.height
-            }
-          end
+          result[:dimensions] = image.dimensions if image.dimensions
         end
       end
     end
