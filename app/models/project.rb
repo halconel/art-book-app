@@ -10,7 +10,8 @@ class Project < ApplicationRecord
     in_progress: 1,
     completed: 2,
     cancelled: 3,
-    on_hold: 4
+    on_hold: 4,
+    published: 5
   }
 
   validates :title, :thumbnail_url, presence: true

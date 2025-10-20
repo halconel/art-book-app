@@ -11,7 +11,7 @@ class Image < ApplicationRecord
   scope :show_on_main_page, -> { where(show_on_main_page: true) }
 
   # Gallery-specific scopes
-  scope :visible, -> { joins(:project).where(projects: { status: 'completed' }) }
+  scope :visible, -> { joins(:project).where(projects: { status: 5 }) }
   scope :featured_first, -> { order(is_featured: :desc, show_on_main_page: :desc, created_at: :desc) }
   scope :by_tags, ->(tags) { where('tags && ARRAY[?]::text[]', Array(tags)) if tags.present? }
   scope :search_by_title, ->(query) { where('title ILIKE ?', "%#{query}%") if query.present? }

@@ -26,7 +26,7 @@ if (!fs.existsSync(tmpDir)) {
     console.log('🔄 Создание скриншота страницы галереи...');
 
     // Переходим на страницу галереи
-    await page.goto('http://localhost:3000/#/gallery', { waitUntil: 'networkidle2' });
+    await page.goto('http://localhost:3000/gallery', { waitUntil: 'networkidle2' });
 
     // Ждем, пока загрузятся изображения
     await new Promise(resolve => setTimeout(resolve, 5000));
