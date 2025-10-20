@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
-  ImageList,
-  ImageListItem,
-  ImageListItemBar,
   Chip,
   Dialog,
   DialogContent,
@@ -18,7 +15,6 @@ import {
   Menu,
   MenuItem,
   CircularProgress,
-  Fade,
 } from '@mui/material';
 import {
   Close,
@@ -52,9 +48,13 @@ const PublicGallery = () => {
     fetchGallery();
   }, []);
 
-  // Refetch when search or filter changes
+  // Refetch when search or filter changes with debounce
   useEffect(() => {
-    fetchGallery(1, searchTerm, tagFilter !== 'all' ? tagFilter : null);
+    const delayDebounceFn = setTimeout(() => {
+      fetchGallery(1, searchTerm, tagFilter !== 'all' ? tagFilter : null);
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, tagFilter]);
 
   const fetchGallery = async (page = 1, search = '', tags = null) => {
@@ -69,6 +69,10 @@ const PublicGallery = () => {
 
       const response = await api.get(`/gallery?${params}`);
       const data = response.data;
+
+      console.log('Gallery API Response:', data);
+      console.log('Images count:', data.images?.length);
+      console.log('First image:', data.images?.[0]);
 
       if (page === 1) {
         setImages(data.images || []);
@@ -98,20 +102,18 @@ const PublicGallery = () => {
   };
 
   const handleNextImage = () => {
-    const filteredImages = getFilteredImages();
-    const nextIndex = (currentImageIndex + 1) % filteredImages.length;
+    const nextIndex = (currentImageIndex + 1) % images.length;
     setCurrentImageIndex(nextIndex);
-    setSelectedImage(filteredImages[nextIndex]);
+    setSelectedImage(images[nextIndex]);
   };
 
   const handlePrevImage = () => {
-    const filteredImages = getFilteredImages();
     const prevIndex =
       currentImageIndex === 0
-        ? filteredImages.length - 1
+        ? images.length - 1
         : currentImageIndex - 1;
     setCurrentImageIndex(prevIndex);
-    setSelectedImage(filteredImages[prevIndex]);
+    setSelectedImage(images[prevIndex]);
   };
 
   const handleToggleFavorite = imageId => {
@@ -185,6 +187,8 @@ const PublicGallery = () => {
       </Box>
     );
   }
+
+  console.log('Rendering gallery with images:', images.length);
 
   return (
     <Box className="public-gallery">
@@ -263,104 +267,119 @@ const PublicGallery = () => {
 
       {/* Gallery Grid */}
       {filteredImages.length > 0 ? (
-        <ImageList variant="masonry" cols={3} gap={16}>
+        <Box
+          sx={{
+            width: '100%',
+            maxWidth: '1400px',
+            mx: 'auto',
+            mb: 4,
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: 'repeat(2, 1fr)',  // 2 columns on mobile
+              sm: 'repeat(3, 1fr)',  // 3 columns on small screens
+              md: 'repeat(4, 1fr)',  // 4 columns on medium screens
+              lg: 'repeat(6, 1fr)',  // 6 columns on large screens (1200px+)
+              xl: 'repeat(6, 1fr)',  // 6 columns on extra large screens
+            },
+            gap: 1,
+          }}
+        >
           {filteredImages.map((image, index) => (
-            <Fade in={true} timeout={300 + index * 50} key={image.id}>
-              <ImageListItem
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    '& img': { transform: 'scale(1.05)' },
-                    '& .overlay': { opacity: 1 },
-                  },
-                }}
-                onClick={() => handleImageClick(image, index)}
-              >
-                <img
-                  src={image.thumbnail_url || image.url}
-                  alt={image.alt_text || image.title}
-                  loading="lazy"
-                  style={{
-                    transition: 'transform 0.3s ease',
-                    borderRadius: 8,
-                  }}
-                />
+            <Box
+              key={image.id}
+              onClick={() => handleImageClick(image, index)}
+              sx={{
+                position: 'relative',
+                width: '100%',
+                aspectRatio: '1 / 1',
+                cursor: 'pointer',
+                overflow: 'hidden',
+                borderRadius: '4px',
+                backgroundColor: '#2a2a2a',
+                '&:hover .image-overlay': {
+                  opacity: 1
+                },
+              }}
+            >
+                  <Box
+                    component="img"
+                    src={image.thumbnail_url || image.url}
+                    alt={image.alt_text || image.title}
+                    loading="lazy"
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                    }}
+                  />
 
-                {/* Overlay */}
-                <Box
-                  className="overlay"
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: 'rgba(0,0,0,0.5)',
-                    opacity: 0,
-                    transition: 'opacity 0.3s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 2,
-                  }}
-                >
-                  <Fullscreen sx={{ color: 'white', fontSize: 40 }} />
-                </Box>
-
-                <ImageListItemBar
-                  title={image.title}
-                  subtitle={
-                    <Box>
-                      {image.description && (
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          sx={{ mb: 0.5 }}
-                        >
-                          {image.description.substring(0, 100)}...
-                        </Typography>
-                      )}
-                      <Box display="flex" gap={0.5} flexWrap="wrap">
-                        {image.tags?.slice(0, 3).map(tag => (
-                          <Chip
-                            key={tag}
-                            label={tag}
-                            size="small"
-                            variant="outlined"
-                            sx={{ fontSize: '0.7rem' }}
-                          />
-                        ))}
-                        {image.tags?.length > 3 && (
-                          <Chip
-                            label={`+${image.tags.length - 3}`}
-                            size="small"
-                            variant="outlined"
-                            sx={{ fontSize: '0.7rem' }}
-                          />
-                        )}
-                      </Box>
+                  {/* Overlay */}
+                  <Box
+                    className="image-overlay"
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)',
+                      opacity: 0,
+                      transition: 'opacity 0.3s ease',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-end',
+                      padding: '16px',
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{ color: 'white', fontWeight: 600, mb: 0.5 }}
+                    >
+                      {image.title}
+                    </Typography>
+                    <Box display="flex" gap={0.5} flexWrap="wrap">
+                      {image.tags?.slice(0, 3).map(tag => (
+                        <Chip
+                          key={tag}
+                          label={tag}
+                          size="small"
+                          sx={{
+                            fontSize: '0.7rem',
+                            height: '20px',
+                            backgroundColor: 'rgba(255,255,255,0.2)',
+                            color: 'white',
+                            border: 'none',
+                          }}
+                        />
+                      ))}
                     </Box>
-                  }
-                  actionIcon={
-                    <IconButton
-                      sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                      onClick={e => {
-                        e.stopPropagation();
-                        handleToggleFavorite(image.id);
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
                       }}
                     >
-                      {favorites.has(image.id) ? (
-                        <Favorite color="error" />
-                      ) : (
-                        <FavoriteBorder />
-                      )}
-                    </IconButton>
-                  }
-                />
-              </ImageListItem>
-            </Fade>
+                      <IconButton
+                        size="small"
+                        sx={{ color: 'white', backgroundColor: 'rgba(0,0,0,0.3)' }}
+                        onClick={e => {
+                          e.stopPropagation();
+                          handleToggleFavorite(image.id);
+                        }}
+                      >
+                        {favorites.has(image.id) ? (
+                          <Favorite fontSize="small" color="error" />
+                        ) : (
+                          <FavoriteBorder fontSize="small" />
+                        )}
+                      </IconButton>
+                    </Box>
+                  </Box>
+            </Box>
           ))}
-        </ImageList>
+        </Box>
       ) : (
         <Box textAlign="center" py={8}>
           <Typography variant="h6" color="text.secondary" gutterBottom>
